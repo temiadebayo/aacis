@@ -1,0 +1,28 @@
+# Enable URL rewriting
+RewriteEngine On
+RewriteBase /aacis/
+
+# Allow direct access to static files
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Redirect all other requests to React index.html
+RewriteRule ^(.*)$ index.html [L,QSA]
+
+
+# Enable URL rewriting
+# RewriteEngine On
+
+# # Rewrite all requests to /afri to index.html, except for actual files and directories
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule ^afri(/.*)?$ /afri/index.html [L]
+
+# # Ensure assets are served correctly from /afri/assets/
+# RewriteCond %{REQUEST_URI} ^/afri/assets/
+# RewriteRule ^afri/assets/(.*)$ /afri/assets/$1 [L]
+
+# # Ensure images are served correctly from /afri/images/
+# RewriteCond %{REQUEST_URI} ^/afri/images/
+# RewriteRule ^afri/images/(.*)$ /afri/images/$1 [L]

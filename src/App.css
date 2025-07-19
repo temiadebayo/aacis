@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+
+* {
+    cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zY3JlZW4zNTkiIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDMyIDMyIj4gPHJlY3Qgc3R5bGU9ImZpbGw6I2JsYWNrIiBjeD0iMTYiIGN5PSIxNiIgcmQ9IjE0IiBmaWxsPSJ0cmFuc3BhcmVudCIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLXdpZHRoPSIyIi8+PHJlY3Qgc3R5bGU9ImZpbGw6YmxhY2siIGN4PSIxNiIgY3k9IjE2IiByZD0iNCIgZmlsbD0ibm9uZSIvPjwvc3ZnPg=='), auto;
+  }
+
+  .heroimg {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .heroimg2 {
+    position: absolute;
+    bottom: -300px;
+    right: 0;
+    left: 0;
+    /* height: 500px; */
+  }
+
+  .hone-ank2{
+    position: absolute;
+    /* top: 1230px; */
+    left: 0;
+  }
+  
+  .hone-ank2b{
+    position: absolute;
+    bottom: -550px;
+    right: 0;
+  }
+
+  .hone-ank3{
+    position: absolute;
+    /* height: 180px; */
+    right: 0;
+  }
+
+.container {
+  width: 100%;
+  max-width: 100%;  
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 16px;  
+  padding-right: 16px; 
+}
+
+
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;  
+  }
+}
+
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;  
+  }
+}
+
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;  
+  }
+}
+
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;  
+  }
+}
+
+.stat-container{
+  position: absolute;
+  right: 0;
+  bottom: -310px;
+}
+@media (max-width: 768px) {
+  .stat-container {
+    position: relative;
+    right: auto;
+    bottom: auto;
+  }
+}

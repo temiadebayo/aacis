@@ -1,0 +1,15 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Rewrite all requests to /aacis to index.html, except for actual files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^aacis(/.*)?$ /aacis/index.html [L]
+
+# Ensure assets (including images) are served correctly from /aacis/
+RewriteCond %{REQUEST_URI} ^/aacis/images/
+RewriteRule ^aacis/images/(.*)$ /aacis/images/$1 [L]
+
+# Ensure assets are served correctly from /afri/assets/
+RewriteCond %{REQUEST_URI} ^/aacis/assets/
+RewriteRule ^aacis/assets/(.*)$ /aacis/assets/$1 [L]

@@ -1,0 +1,21 @@
+<div className="w-[400px] h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
+						<img src={speaker1} className="" />
+						<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
+							<p className="text-white text-xl font-500 text-left">Dr. Ameenah Gurib-Fakim</p>
+							<p className="text-white text-xs">Her Excellency, Former President of Mauritius</p>
+						</div>
+					</div>
+					<div className="w-[400px] h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
+						{/* <img src={speaker1} className="" /> */}
+						<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
+							{/* <p className="text-white text-xl font-500 text-left">Dr. Ameenah Gurib-Fakim</p> */}
+							{/* <p className="text-white text-xs">Her Excellency, Former President of Mauritius</p> */}
+						</div>
+					</div>
+					<div className="w-[400px] h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
+						{/* <img src={speaker1} className="" /> */}
+						<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
+							{/* <p className="text-white text-xl font-500 text-left">Dr. Ameenah Gurib-Fakim</p> */}
+							{/* <p className="text-white text-xs">Her Excellency, Former President of Mauritius</p> */}
+						</div>
+					</div>
