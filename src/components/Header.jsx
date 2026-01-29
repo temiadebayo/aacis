@@ -1,609 +1,242 @@
-import React, { useState, useEffect, useRef } from 'react';
-import logo from '../assets/logo.png';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState({
-    upskilling: false,
-    contact: false,
-    services: false,
-  });
+	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+	const [isScrolled, setIsScrolled] = useState(false);
+	const location = useLocation();
 
-  const dropdownRefs = useRef({
-    upskilling: useRef(null),
-    contact: useRef(null),
-    services: useRef(null),
-  });
-  const menuButtonRef = useRef(null);
+	console.log('Header component rendering, location:', location.pathname);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+	useEffect(() => {
+		const handleScroll = () => {
+			setIsScrolled(window.scrollY > 10);
+		};
 
-  const toggleDropdown = (dropdown) => {
-    setIsDropdownOpen((prevState) => {
-      const newState = {
-        upskilling: false,
-        contact: false,
-        services: false,
-        // ...prevState,
-      };
-      newState[dropdown] = !newState[dropdown];
-      return newState;
-    });
-  };
+		window.addEventListener("scroll", handleScroll);
+		return () => window.removeEventListener("scroll", handleScroll);
+	}, []);
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      const dropdownKeys = Object.keys(dropdownRefs.current);
-      const isClickInsideDropdown = dropdownKeys.some((key) => {
-        return dropdownRefs.current[key].current && dropdownRefs.current[key].current.contains(e.target);
-      });
+	const toggleDropdown = () => {
+		setIsDropdownOpen(!isDropdownOpen);
+	};
 
-      if (!isClickInsideDropdown && menuButtonRef.current && !menuButtonRef.current.contains(e.target)) {
-        setIsDropdownOpen({
-          upskilling: false,
-          contact: false,
-          services: false,
-        });
-      }
-    };
+	const closeDropdown = () => {
+		setIsDropdownOpen(false);
+	};
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+	// Check if current page is AACIS related
+	// Since basename is set to /aacis, all routes are already AACIS pages
+	const isAACISPage = true; // Always show on AACIS pages since basename is set
 
-  return (
-    <div className="bg-white">
-      <div className="max-w-screen-xl mx-auto px-4 bg-white">
-        <header className=" py-4 px-6 flex justify-between items-center">
-          <div className="pr-12">
-            <img src={logo} alt="" className='md:h-[36px]' />
-          </div>
+	// If not on AACIS page, don't render the header
+	if (!isAACISPage) {
+		return null;
+	}
 
-          <div className="w-[80%] flex justify-between">
-            <nav className="hidden md:flex space-x-4 text-[16px] font-[400] font-montserrat text-base leading-[19.5px] text-[#171717]">
-              <a href="https://aquarianconsult.com/about-us/" className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4">About Us</a>
+	return (
+		<>
+			<header className={`fixed top-0 left-0 w-full z-[9999] transition-all duration-300 bg-white shadow-md`}>
+				<div className="w-full px-4 lg:px-8">
+					<div className="flex items-center justify-between h-20">
+						{/* Logo */}
+						<Link to="/" className="flex items-center" onClick={closeDropdown}>
+							<img 
+								src={logo} 
+								alt="AACIS Logo" 
+								className="h-8 w-auto md:h-10 lg:h-12 object-contain" 
+							/>
+						</Link>
 
-              <div className="relative" ref={dropdownRefs.current.services}>
-                <a
-                  href="#services"
-                  className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4 flex items-center"
-                  onClick={() => toggleDropdown('services')}
-                >
-                  What We Do
-                  <svg
-                    className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.services ? 'rotate-180' : ''}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </a>
-                {/* Dropdown menu */}
-                <div className={`z-[1] absolute left-0 ${isDropdownOpen.services ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2 z-10 md:w-[300px]`}>
-                  <a href="https://aquarianconsult.com/what-we-do#organizationalefficiency" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Organisation Efficency Through Team Effectiveness</a>
-                  <a href="https://aquarianconsult.com/what-we-do#businessprocess" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Business Process Re-Engineering</a>
-                  <a href="https://aquarianconsult.com/what-we-do#executiveplacement" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Executive Placement</a>
-                  <a href="https://aquarianconsult.com/what-we-do#manpowermanagement" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Manpower Management</a>
-                  <a href="https://aquarianconsult.com/what-we-do#talentacquisition" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Talent Acquisition</a>
-                  <a href="https://aquarianconsult.com/what-we-do#businessdevelopment" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Business Development Services</a>
-                  <a href="https://aquarianconsult.com/what-we-do#skillenhancement" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Skills Enhancement Programme</a>
-                </div>
-              </div>
+						{/* Desktop Navigation */}
+						<nav className="hidden lg:flex items-center space-x-2">
+							<Link 
+								to="/" 
+								className="text-[#032642] hover:text-[#00159E] font-medium transition-all duration-300 text-sm whitespace-nowrap px-4 py-2 rounded-lg hover:bg-[#00159E]/5 hover:scale-105 cursor-custom-navbar"
+								onClick={closeDropdown}
+							>
+								Home
+							</Link>
+							<Link 
+								to="/speaker-detail" 
+								className="text-[#032642] hover:text-[#00159E] font-medium transition-all duration-300 text-sm whitespace-nowrap px-4 py-2 rounded-lg hover:bg-[#00159E]/5 hover:scale-105 cursor-custom-navbar"
+								onClick={closeDropdown}
+							>
+								Speakers
+							</Link>
+							<Link 
+								to="/agric-summit" 
+								className="text-[#39663a] hover:text-[#39663a] font-medium transition-all duration-300 text-sm whitespace-nowrap px-4 py-2 rounded-lg hover:bg-[#39663a]/10 hover:scale-105 cursor-custom-navbar border border-[#39663a]/20"
+								onClick={closeDropdown}
+							>
+								Agric Summit
+							</Link>
+							<Link 
+								to="/health-summit" 
+								className="text-[#a30907] hover:text-[#a30907] font-medium transition-all duration-300 text-sm whitespace-nowrap px-4 py-2 rounded-lg hover:bg-[#a30907]/10 hover:scale-105 cursor-custom-navbar border border-[#a30907]/20"
+								onClick={closeDropdown}
+							>
+								Health Summit
+							</Link>
+							<Link 
+								to="/visas" 
+								className="text-[#032642] hover:text-[#00159E] font-medium transition-all duration-300 text-sm whitespace-nowrap px-4 py-2 rounded-lg hover:bg-[#00159E]/5 hover:scale-105 cursor-custom-navbar"
+								onClick={closeDropdown}
+							>
+								Visa
+							</Link>
+							<Link 
+								to="/register" 
+								className="text-[#032642] hover:text-[#00159E] font-medium transition-all duration-300 text-sm whitespace-nowrap px-4 py-2 rounded-lg hover:bg-[#00159E]/5 hover:scale-105 cursor-custom-navbar"
+								onClick={closeDropdown}
+							>
+								Registration
+							</Link>
+							<Link 
+								to="/charter-flight" 
+								className="text-[#032642] hover:text-[#00159E] font-medium transition-all duration-300 text-sm whitespace-nowrap px-4 py-2 rounded-lg hover:bg-[#00159E]/5 hover:scale-105 cursor-custom-navbar"
+								onClick={closeDropdown}
+							>
+								Charter Flight
+							</Link>
+						<Link 
+							to="/concierge" 
+							className="text-[#032642] hover:text-[#00159E] font-medium transition-all duration-300 text-sm whitespace-nowrap px-4 py-2 rounded-lg hover:bg-[#00159E]/5 hover:scale-105 cursor-custom-navbar"
+							onClick={closeDropdown}
+						>
+							Concierge
+						</Link>
+							<Link 
+								to="/sponsors" 
+								className="text-[#032642] hover:text-[#00159E] font-medium transition-all duration-300 text-sm whitespace-nowrap px-4 py-2 rounded-lg hover:bg-[#00159E]/5 hover:scale-105 cursor-custom-navbar"
+								onClick={closeDropdown}
+							>
+								Sponsorship
+							</Link>
+							
+							
+							{/* CTA Button - Far Right */}
+							<div className="ml-6">
+								<Link 
+									to="/register" 
+									className="bg-gradient-to-r from-[#032642] to-[#00159E] text-white font-semibold px-6 py-2 rounded-lg hover:scale-105 hover:opacity-90 transition-all duration-300 text-sm whitespace-nowrap cursor-custom-pointer shadow-lg"
+									onClick={closeDropdown}
+								>
+									REGISTER NOW
+								</Link>
+							</div>
+						</nav>
 
-              <a href="https://aquarianconsult.com/standard-portfolio/" className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4">Gallery</a>
+						{/* Mobile Menu Button */}
+						<button
+							onClick={toggleDropdown}
+							className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+							aria-label="Toggle menu"
+						>
+							<svg
+								className={`w-6 h-6 text-[#032642] transition-transform duration-200 ${
+									isDropdownOpen ? 'rotate-90' : ''
+								}`}
+								fill="none"
+								stroke="currentColor"
+								viewBox="0 0 24 24"
+							>
+								{isDropdownOpen ? (
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+								) : (
+									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+								)}
+							</svg>
+						</button>
+					</div>
 
-              <div className="relative" ref={dropdownRefs.current.upskilling}>
-                <a
-                  href="#upskilling"
-                  className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4 flex items-center"
-                  onClick={() => toggleDropdown('upskilling')}
-                >
-                  Upskilling Centre
-                  <svg
-                    className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.upskilling ? 'rotate-180' : ''}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </a>
-                {/* Dropdown menu */}
-                <div className={`z-[1] absolute left-0 ${isDropdownOpen.upskilling ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2`}>
-                  <a href="https://aquarianconsult.com/upskill-photography/" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Photography</a>
-                  <a href="https://aquarianconsult.com/entrepreneurship_program/" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Business</a>
-                </div>
-              </div>
+					{/* Mobile Dropdown Menu */}
+					{isDropdownOpen && (
+						<div className="lg:hidden border-t border-gray-200 bg-white/95 backdrop-blur-md">
+							<div className="py-4 space-y-2">
+								<Link 
+									to="/" 
+									className="block px-4 py-3 text-[#032642] hover:text-[#00159E] hover:bg-[#00159E]/5 font-medium transition-all duration-300 cursor-custom-navbar"
+									onClick={closeDropdown}
+								>
+									Home
+								</Link>
+								<Link 
+									to="/speaker-detail" 
+									className="block px-4 py-3 text-[#032642] hover:text-[#00159E] hover:bg-[#00159E]/5 font-medium transition-all duration-300 cursor-custom-navbar"
+									onClick={closeDropdown}
+								>
+									Speakers
+								</Link>
+								<Link 
+									to="/agric-summit" 
+									className="block px-4 py-3 text-[#39663a] hover:text-[#39663a] hover:bg-[#39663a]/10 font-medium transition-all duration-300 cursor-custom-navbar border-l-4 border-[#39663a]/20 pl-3"
+									onClick={closeDropdown}
+								>
+									Agric Summit
+								</Link>
+								<Link 
+									to="/health-summit" 
+									className="block px-4 py-3 text-[#a30907] hover:text-[#a30907] hover:bg-[#a30907]/10 font-medium transition-all duration-300 cursor-custom-navbar border-l-4 border-[#a30907]/20 pl-3"
+									onClick={closeDropdown}
+								>
+									Health Summit
+								</Link>
+								<Link 
+									to="/visas" 
+									className="block px-4 py-3 text-[#032642] hover:text-[#00159E] hover:bg-[#00159E]/5 font-medium transition-all duration-300 cursor-custom-navbar"
+									onClick={closeDropdown}
+								>
+									Visa
+								</Link>
+								<Link 
+									to="/register" 
+									className="block px-4 py-3 text-[#032642] hover:text-[#00159E] hover:bg-[#00159E]/5 font-medium transition-all duration-300 cursor-custom-navbar"
+									onClick={closeDropdown}
+								>
+									Registration
+								</Link>
+								<Link 
+									to="/charter-flight" 
+									className="block px-4 py-3 text-[#032642] hover:text-[#00159E] hover:bg-[#00159E]/5 font-medium transition-all duration-300 cursor-custom-navbar"
+									onClick={closeDropdown}
+								>
+									Charter Flight
+								</Link>
+							<Link 
+								to="/concierge" 
+								className="block px-4 py-3 text-[#032642] hover:text-[#00159E] hover:bg-[#00159E]/5 font-medium transition-all duration-300 cursor-custom-navbar"
+								onClick={closeDropdown}
+							>
+								Concierge
+							</Link>
+								<Link 
+									to="/sponsors" 
+									className="block px-4 py-3 text-[#032642] hover:text-[#00159E] hover:bg-[#00159E]/5 font-medium transition-all duration-300 cursor-custom-navbar"
+									onClick={closeDropdown}
+								>
+									Sponsorship
+								</Link>
+								<a 
+									href="/AACIS26_brochure.pdf" 
+									target="_blank" 
+									rel="noopener noreferrer"
+									className="block px-4 py-3 text-[#032642] hover:text-[#00159E] hover:bg-[#00159E]/5 font-medium transition-all duration-300 cursor-custom-navbar"
+									onClick={closeDropdown}
+								>
+									Brochure
+								</a>
+							</div>
+						</div>
+					)}
+				</div>
+			</header>
 
-              <div className="relative" ref={dropdownRefs.current.contact}>
-                <a
-                  href="#contact"
-                  className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4 flex items-center"
-                  onClick={() => toggleDropdown('contact')}
-                >
-                  Contact Us
-                  <svg
-                    className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.contact ? 'rotate-180' : ''}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </a>
-                {/* Dropdown menu */}
-                <div className={`z-[1]  absolute left-0 ${isDropdownOpen.contact ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2`}>
-                  <a href="https://aquarianconsult.com/our-location/" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Our Location</a>
-                </div>
-              </div>
-
-              <div className="relative" ref={dropdownRefs.current.contact}>
-                <a
-                  href="#aacis"
-                  className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4 flex items-center font-bold"
-                  onClick={() => toggleDropdown('aacis')}
-                >
-                  AACIS
-                  <svg
-                    className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.contact ? 'rotate-180' : ''}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </a>
-                {/* Dropdown menu */}
-                <div className={`z-[1] absolute left-0 ${isDropdownOpen.aacis ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2 w-[150px]`}>
-                  <a href="/aacis/" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">AACIS</a>
-                  <a href="/aacis/about" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">About Us</a>
-                  <a href="/aacis/gallery" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Gallery</a>
-                  <a href="/aacis/register" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Register</a>
-                  {/* <a href="/contact-us" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Contact Us</a> */}
-                </div>
-              </div>
-              {/* <a href="#aacis" className="text-[#171717] px-4 font-[600]">AACIS</a> */}
-            </nav>
-          </div>
-
-          <button
-            className="md:hidden text-lg focus:outline-none"
-            onClick={toggleMenu}
-            ref={menuButtonRef}
-          >
-            {isMenuOpen ?
-              <span className="block w-6 h-1 text-[#171717] mb-1">X</span> : (
-                <>
-                  <span className="block w-6 h-1 bg-black mb-1"></span>
-                  <span className="block w-6 h-1 bg-black mb-1"></span>
-                  <span className="block w-6 h-1 bg-black"></span>
-                </>
-              )}
-          </button>
-        </header>
-
-        {isMenuOpen && (
-          <nav className="md:hidden bg-white p-4 space-y-4 text-sm">
-            <a href="https://aquarianconsult.com/about-us/" className="hover:text-red-600 block">About Us</a>
-            <hr />
-
-            <div className="relative" ref={dropdownRefs.current.services}>
-              <a
-                href="#services"
-                className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4 flex items-center"
-                onClick={() => toggleDropdown('services')}
-              >
-                What We Do
-                <svg
-                  className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.services ? 'rotate-180' : ''}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </a>
-              {/* Dropdown menu */}
-              <div className={`z-[1] absolute left-0 ${isDropdownOpen.services ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2 z-10`}>
-                <a href="https://aquarianconsult.com/what-we-do#organizationalefficiency" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Organisation Efficency Through Team Effectiveness</a>
-                <a href="https://aquarianconsult.com/what-we-do#businessprocess" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Business Process Re-Engineering</a>
-                <a href="https://aquarianconsult.com/what-we-do#executiveplacement" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Executive Placement</a>
-                <a href="https://aquarianconsult.com/what-we-do#manpowermanagement" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Manpower Management</a>
-                <a href="https://aquarianconsult.com/what-we-do#talentacquisition" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Talent Acquisition</a>
-                <a href="https://aquarianconsult.com/what-we-do#businessdevelopment" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Business Development Services</a>
-                <a href="https://aquarianconsult.com/what-we-do#skillenhancement" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Skills Enhancement Programme</a>
-              </div>
-            </div>
-            <hr />
-            <a href="https://aquarianconsult.com/standard-portfolio/" className="hover:text-red-600 block">Gallery</a>
-            <hr />
-            <div className="relative" ref={dropdownRefs.current.upskilling}>
-              <a
-                href="#upskilling"
-                className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4 flex items-center"
-                onClick={() => toggleDropdown('upskilling')}
-              >
-                Upskilling Centre
-                <svg
-                  className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.upskilling ? 'rotate-180' : ''}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </a>
-              {/* Dropdown menu */}
-              <div className={`z-[1] absolute left-0 ${isDropdownOpen.upskilling ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2 z-10`}>
-                <a href="https://aquarianconsult.com/upskill-photography/" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Photography</a>
-                <a href="https://aquarianconsult.com/entrepreneurship_program/" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Business</a>
-              </div>
-            </div>
-            <hr />
-            <div className="relative" ref={dropdownRefs.current.contact}>
-              <a
-                href="#contact"
-                className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4 flex items-center"
-                onClick={() => toggleDropdown('contact')}
-              >
-                Contact Us
-                <svg
-                  className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.contact ? 'rotate-180' : ''}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </a>
-              {/* Dropdown menu */}
-              <div className={`z-[1] absolute left-0 ${isDropdownOpen.contact ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2`}>
-                <a href="https://aquarianconsult.com/our-location/" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Our Location</a>
-              </div>
-            </div>
-            <hr />
-            <div className="relative" ref={dropdownRefs.current.contact}>
-              <a
-                href="#aacis"
-                className="hover:text-[#00159E] cursor-pointer hover:font-bold px-auto xl:px-4 flex items-center font-bold"
-                onClick={() => toggleDropdown('aacis')}
-              >
-                AACIS
-                <svg
-                  className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.aacis ? 'rotate-180' : ''}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </a>
-              {/* Dropdown menu */}
-              <div className={`z-[1]  absolute left-0 ${isDropdownOpen.aacis ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2`}>
-                <a href="/aacis/" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">AACIS</a>
-                <a href="/aacis/about" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">About Us</a>
-                <a href="/aacis/gallery" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Gallery</a>
-                <a href="/aacis/register" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Register</a>
-                {/* <a href="/contact-us" className="cursor-pointer block px-4 py-2 text-[#171717] hover:bg-[#00159E] hover:text-white">Contact Us</a> */}
-              </div>
-            </div>
-            {/* <a href="#aacis" className="text-red-600 font-bold block">AACIS</a> */}
-
-          </nav>
-        )}
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="bg-white">
-      <div className="max-w-screen-xl mx-auto px-4 bg-white">
-        <header className=" py-4 px-6 flex justify-between items-center">
-          <div className="pr-12">
-            <img src={logo} alt="" className='md:h-[36px]' />
-          </div>
-
-          <div className="w-[80%] flex justify-between">
-            <nav className="hidden md:flex space-x-4 text-[16px] font-[400] font-montserrat text-base leading-[19.5px] text-black">
-              <a href="https://aquarianconsult.com/about-us/" className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4">About Us</a>
-
-              <div className="relative" ref={dropdownRefs.current.services}>
-                <a
-                  href="#services"
-                  className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4 flex items-center"
-                  onClick={() => toggleDropdown('services')}
-                >
-                  What We Do
-                  <svg
-                    className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.services ? 'rotate-180' : ''}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </a>
-                {/* Dropdown menu */}
-                <div className={`absolute left-0 ${isDropdownOpen.services ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2 z-10 md:w-[300px]`}>
-                  <a href="https://aquarianconsult.com/what-we-do#organizationalefficiency" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Organisation Efficency Through Team Effectiveness</a>
-                  <a href="https://aquarianconsult.com/what-we-do#businessprocess" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Business Process Re-Engineering</a>
-                  <a href="https://aquarianconsult.com/what-we-do#executiveplacement" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Executive Placement</a>
-                  <a href="https://aquarianconsult.com/what-we-do#manpowermanagement" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Manpower Management</a>
-                  <a href="https://aquarianconsult.com/what-we-do#talentacquisition" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Talent Acquisition</a>
-                  <a href="https://aquarianconsult.com/what-we-do#businessdevelopment" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Business Development Services</a>
-                  <a href="https://aquarianconsult.com/what-we-do#skillenhancement" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Skills Enhancement Programme</a>
-                </div>
-              </div>
-
-              <a href="https://aquarianconsult.com/standard-portfolio/" className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4">Gallery</a>
-
-              <div className="relative" ref={dropdownRefs.current.upskilling}>
-                <a
-                  href="#upskilling"
-                  className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4 flex items-center"
-                  onClick={() => toggleDropdown('upskilling')}
-                >
-                  Upskilling Centre
-                  <svg
-                    className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.upskilling ? 'rotate-180' : ''}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </a>
-                {/* Dropdown menu */}
-                <div className={`absolute left-0 ${isDropdownOpen.upskilling ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2`}>
-                  <a href="https://aquarianconsult.com/upskill-photography/" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Photography</a>
-                  <a href="https://aquarianconsult.com/entrepreneurship_program/" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Business</a>
-                </div>
-              </div>
-
-              <div className="relative" ref={dropdownRefs.current.contact}>
-                <a
-                  href="#contact"
-                  className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4 flex items-center"
-                  onClick={() => toggleDropdown('contact')}
-                >
-                  Contact Us
-                  <svg
-                    className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.contact ? 'rotate-180' : ''}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </a>
-                {/* Dropdown menu */}
-                <div className={`absolute left-0 ${isDropdownOpen.contact ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2`}>
-                  <a href="https://aquarianconsult.com/our-location/" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Our Location</a>
-                </div>
-              </div>
-
-              <div className="relative" ref={dropdownRefs.current.contact}>
-                <a
-                  href="#aacis"
-                  className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4 flex items-center font-bold"
-                  onClick={() => toggleDropdown('aacis')}
-                >
-                  AACIS
-                  <svg
-                    className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.contact ? 'rotate-180' : ''}`}
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M6 9l6 6 6-6" />
-                  </svg>
-                </a>
-                {/* Dropdown menu */}
-                <div className={`absolute left-0 ${isDropdownOpen.aacis ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2 w-[150px]`}>
-                  <a href="/aacis/" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">AACIS</a>
-                  <a href="/aacis/about" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">About Us</a>
-                  <a href="/aacis/register" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Register</a>
-                  {/* <a href="/contact-us" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Contact Us</a> */}
-                </div>
-              </div>
-              {/* <a href="#aacis" className="text-[#171717] px-4 font-[600]">AACIS</a> */}
-            </nav>
-          </div>
-
-          <button
-            className="md:hidden text-lg focus:outline-none"
-            onClick={toggleMenu}
-            ref={menuButtonRef}
-          >
-            {isMenuOpen ?
-              <span className="block w-6 h-1 text-[#171717] mb-1">X</span> : (
-                <>
-                  <span className="block w-6 h-1 bg-black mb-1"></span>
-                  <span className="block w-6 h-1 bg-black mb-1"></span>
-                  <span className="block w-6 h-1 bg-black"></span>
-                </>
-              )}
-          </button>
-        </header>
-
-        {isMenuOpen && (
-          <nav className="md:hidden bg-white p-4 space-y-4 text-sm">
-            <a href="https://aquarianconsult.com/about-us/" className="hover:text-red-600 block">About Us</a>
-            <hr />
-
-            <div className="relative" ref={dropdownRefs.current.services}>
-              <a
-                href="#services"
-                className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4 flex items-center"
-                onClick={() => toggleDropdown('services')}
-              >
-                What We Do
-                <svg
-                  className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.services ? 'rotate-180' : ''}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </a>
-              {/* Dropdown menu */}
-              <div className={`absolute left-0 ${isDropdownOpen.services ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2 z-10`}>
-                <a href="https://aquarianconsult.com/what-we-do#organizationalefficiency" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Organisation Efficency Through Team Effectiveness</a>
-                <a href="https://aquarianconsult.com/what-we-do#businessprocess" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Business Process Re-Engineering</a>
-                <a href="https://aquarianconsult.com/what-we-do#executiveplacement" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Executive Placement</a>
-                <a href="https://aquarianconsult.com/what-we-do#manpowermanagement" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Manpower Management</a>
-                <a href="https://aquarianconsult.com/what-we-do#talentacquisition" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Talent Acquisition</a>
-                <a href="https://aquarianconsult.com/what-we-do#businessdevelopment" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Business Development Services</a>
-                <a href="https://aquarianconsult.com/what-we-do#skillenhancement" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Skills Enhancement Programme</a>
-              </div>
-            </div>
-            <hr />
-            <a href="https://aquarianconsult.com/standard-portfolio/" className="hover:text-red-600 block">Gallery</a>
-            <hr />
-            <div className="relative" ref={dropdownRefs.current.upskilling}>
-              <a
-                href="#upskilling"
-                className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4 flex items-center"
-                onClick={() => toggleDropdown('upskilling')}
-              >
-                Upskilling Centre
-                <svg
-                  className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.upskilling ? 'rotate-180' : ''}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </a>
-              {/* Dropdown menu */}
-              <div className={`absolute left-0 ${isDropdownOpen.upskilling ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2 z-10`}>
-                <a href="https://aquarianconsult.com/upskill-photography/" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Photography</a>
-                <a href="https://aquarianconsult.com/entrepreneurship_program/" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Business</a>
-              </div>
-            </div>
-            <hr />
-            <div className="relative" ref={dropdownRefs.current.contact}>
-              <a
-                href="#contact"
-                className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4 flex items-center"
-                onClick={() => toggleDropdown('contact')}
-              >
-                Contact Us
-                <svg
-                  className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.contact ? 'rotate-180' : ''}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </a>
-              {/* Dropdown menu */}
-              <div className={`absolute left-0 ${isDropdownOpen.contact ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2`}>
-                <a href="https://aquarianconsult.com/our-location/" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Our Location</a>
-              </div>
-            </div>
-            <hr />
-            <div className="relative" ref={dropdownRefs.current.contact}>
-              <a
-                href="#aacis"
-                className="hover:text-[#00159E] hover:font-bold px-auto xl:px-4 flex items-center font-bold"
-                onClick={() => toggleDropdown('aacis')}
-              >
-                AACIS
-                <svg
-                  className={`ml-2 w-4 h-4 transition-transform duration-300 ${isDropdownOpen.aacis ? 'rotate-180' : ''}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </a>
-              {/* Dropdown menu */}
-              <div className={`absolute left-0 ${isDropdownOpen.aacis ? 'block' : 'hidden'} bg-white shadow-lg border border-gray-200 rounded-lg mt-2`}>
-                <a href="/aacis/" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">AACIS</a>
-                <a href="/aacis/about" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">About Us</a>
-                <a href="/aacis/register" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Register</a>
-                {/* <a href="/contact-us" className="block px-4 py-2 text-black hover:bg-[#00159E] hover:text-white">Contact Us</a> */}
-              </div>
-            </div>
-            {/* <a href="#aacis" className="text-red-600 font-bold block">AACIS</a> */}
-
-          </nav>
-        )}
-      </div>
-    </div>
-  );
+			{/* Spacer to prevent content from being hidden behind fixed header */}
+			<div className="h-20 w-full" />
+		</>
+	);
 }
 
 export default Header;

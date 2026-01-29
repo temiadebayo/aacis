@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import payment_success from "../assets/payment_success.svg";
 import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-const PaymentSuccess = () => {
+function RegistrationSuccessful() {
+	const navigate = useNavigate();
+
+	const handleGoHome = () => {
+		navigate('/aacis/');
+	};
+
 	const [searchParams] = useSearchParams();
 	const type = searchParams.get('type') || 'payment';
 	const amount = searchParams.get('amount') || 0;
@@ -87,12 +94,12 @@ const PaymentSuccess = () => {
 			  )}
 			  
 				<div className="text-center">
-					<a 
-						href='/aacis/'
-						className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600"
+					<button
+						onClick={handleGoHome}
+						className="bg-[#a30907] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#8a0806]"
 					>
-						Go Home
-					</a>
+						Go to Homepage
+					</button>
 				</div>
 			</div>
 			
@@ -107,4 +114,4 @@ const PaymentSuccess = () => {
 	);
 };
 
-export default PaymentSuccess;
+export default RegistrationSuccessful;

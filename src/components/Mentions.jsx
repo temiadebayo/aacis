@@ -24,6 +24,16 @@ function Mentions() {
 			<section className="py-12 md:py-16 md:px-24 px-10 bg-white font-gruppo">
 				<div className="grid lg:grid-cols-3 gap-10 mt-10">
 
+					<div className="xl:max-w-[380px] bg-white flex flex-col justify-center items-center">
+						<p className="xl:text-5xl text-3xl font-700 text-center text-[#00159E]  truncate">A A C I S ' 2 5</p>
+						<p className="xl:text-4xl text-2xl font-700 text-center text-[#f0790c] truncate">
+							M E D I A
+						</p>
+						<p className="xl:text-4xl text-2xl font-700 text-center text-[#f0790c] truncate">
+							M E N T I O N S
+						</p>
+					</div>
+
 					<div className="xl:max-w-[380px] p-2 flex justify-center items-center bg-[url(/src/assets/themed_bg.png)] bg-repeat bg-contain">
 						<div className="xl:h-[200px] h-full w-full bg-white p-5 border grid grid-flow-col grid-rows-3 gap-5">
 							<img src={business_day} className="w-[200px]" />
@@ -98,15 +108,7 @@ function Mentions() {
 							M E N T I O N S
 						</p>
 					</div> */}
-					<div className="xl:max-w-[380px] bg-white flex flex-col justify-center items-center">
-						<p className="xl:text-5xl text-3xl font-700 text-center text-[#00159E]  truncate">A A C I S ' 2 5</p>
-						<p className="xl:text-4xl text-2xl font-700 text-center text-[#f0790c] truncate">
-							M E D I A
-						</p>
-						<p className="xl:text-4xl text-2xl font-700 text-center text-[#f0790c] truncate">
-							M E N T I O N S
-						</p>
-					</div>
+					
 					<div className="xl:max-w-[380px] p-2 flex justify-center items-center bg-[url(/src/assets/themed_bg.png)] bg-repeat bg-contain">
 						<div className="xl:h-[200px] h-full w-full bg-white p-5 border grid grid-flow-col grid-rows-3 gap-5">
 							<img src={daily_trust} className="w-[200px]" />

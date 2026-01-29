@@ -90,3 +90,37 @@
     bottom: auto;
   }
 }
+
+/* Responsive marquee speed */
+@media (max-width: 768px) {
+  .marquee-content {
+    animation-duration: 20s;
+  }
+}
+
+@media (min-width: 1200px) {
+  .marquee-content {
+    animation-duration: 35s;
+  }
+}
+
+/* Small Marquee for Floating Button */
+.marquee-content-small {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee-small 8s linear infinite;
+  padding-left: 100%;
+}
+
+.marquee-content-small:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marquee-small {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

@@ -10,21 +10,9 @@ import Readmore from "../assets/readmore.svg";
 import { CarouselProvider, Slider, Slide } from 'pure-react-carousel';
 
 import speaker1 from "../assets/speakers/speaker1.png";
-import aisha from "../assets/speakers/aisha.png";
-import micheal from "../assets/speakers/micheal.png";
-import olori from "../assets/speakers/olori.png";
-import abba from "../assets/speakers/abba.jpg";
-import abub from "../assets/speakers/abub.jpg";
-import larr from "../assets/speakers/larr.png";
-import calv from "../assets/speakers/calv.jpg";
-import denz from "../assets/speakers/denz.jpg";
-import naee from "../assets/speakers/naee.jpg";
-import omob from "../assets/speakers/omob.jpeg";
-import bene from "../assets/speakers/bene.jpg";
-import sama from "../assets/speakers/sama.jpg";
-import robe from "../assets/speakers/robe.jpg";
-import wale from "../assets/speakers/wale.jpg";
-import wayn from "../assets/speakers/wayn.jpg";
+import samal from "../assets/speakers/samal.jpeg";
+import philp from "../assets/speakers/philp.jpeg";
+import kyari from "../assets/speakers/kyari.jpeg";
 
 import ScrollAnimation from "react-animate-on-scroll";
 
@@ -126,7 +114,7 @@ const KeynoteSpeaker = () => {
 						{/* <div className="container flex flex-wrap justify-center gap-5 py-10 font-gruppo">
 							<div className="w-[400px] h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
 								<img src={speaker1} className="" />
-								<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
+								<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bExecutive Secretary, Nigerian Investment Promotion Commissiong-[#000]/70">
 									<p className="text-white text-xl font-500 text-left">Dr. Ameenah Gurib-Fakim</p>
 									<p className="text-white text-xs">Her Excellency, Former President of Mauritius</p>
 								</div>
@@ -147,162 +135,65 @@ const KeynoteSpeaker = () => {
                   className="w-full h-full"
                   naturalSlideWidth={100}
                   naturalSlideHeight={80}
-                  totalSlides={16}
+                  totalSlides={3}
                   isPlaying={true}
                   visibleSlides={visibleSlides}
                 >
                   <Slider>
                     <Slide index={0}>
 						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={speaker1} className="" />
+							<img src={samal} className="w-full h-full object-contain object-center" />
 							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Dr. Ameenah Gurib-Fakim</p>
-								<p className="text-white text-xs">Her Excellency, Former President of Mauritius</p>
+								<p className="text-white text-xl font-500 text-left">Hon. Samal Mojah Duggins</p>
+								<p className="text-white text-xs">Minister of Agriculture, Fisheries, Marine Resources and Cooperatives, Small Business and Entrepreneurship, Sports and The Creative Economy and Entertainment and The Arts.</p>
+								<a 
+									href="/aacis/speaker-detail?speaker=samal-duggins" 
+									className="inline-block mt-2 text-[#0097fe] text-sm font-semibold hover:text-white transition-colors"
+								>
+									Read More →
+								</a>
 							</div>
 						</div>
                     </Slide>
                     <Slide index={1}>
 						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={bene} className="" />
+							<img src={philp} className="w-full h-full object-contain object-center" />
 							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Professor Benedict Oramah</p>
-								<p className="text-white text-xs">President, African Export Import Bank</p>
+								<p className="text-white text-xl font-500 text-left">Hon. Philip Telesford</p>
+								<p className="text-white text-xs">Minister for Social and Community Development, Housing and Gender Affairs with responsibility for  Community Development and Housing</p>
+								<a 
+									href="/aacis/speaker-detail?speaker=philip-telesford" 
+									className="inline-block mt-2 text-[#0097fe] text-sm font-semibold hover:text-white transition-colors"
+								>
+									Read More →
+								</a>
 							</div>
 						</div>
                     </Slide>
                     <Slide index={2}>
 						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={aisha} className="" />
+							<img src={kyari} className="w-full h-full object-contain object-center" />
 							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Ms. Aisha Rimi</p>
-								<p className="text-white text-xs">Executive Secretary, Nigerian Investment Promotion Commission (NIPC)</p>
+								<p className="text-white text-xl font-500 text-left">Sen. Abubakar Kyari, CON</p>
+								<p className="text-white text-xs">Minister of Agriculture and food security Federal Republic of Nigeria</p>
+								<a 
+									href="/aacis/speaker-detail?speaker=abubakar-kyari" 
+									className="inline-block mt-2 text-[#0097fe] text-sm font-semibold hover:text-white transition-colors"
+								>
+									Read More →
+								</a>
 							</div>
 						</div>
+						<p className="text-[#00159E] text-lg font-semibold text-right pt-5 pb-10">To be confirmed.</p>
                     </Slide>
-                    <Slide index={3}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={micheal} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Mr. Michael Ogbalu</p> 
-								 <p className="text-white text-xs">Chief Executive Officer, Pan-African Payment and Settlement System (PAPSS)</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={4}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={olori} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Olori Atuwatse III</p>
-								<p className="text-white text-xs">Olori of Warri</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={5}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={omob} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Mr. Omoboyede Olusanya, CEO</p>
-								<p className="text-white text-xs">Flour Mills, Nigeria</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={6}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={abba} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Mr. Abba Bello</p>
-								<p className="text-white text-xs">Managing Director, Nigeria Export Import Bank</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={7}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={calv} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">H.E Calvin St. Juste</p>
-								<p className="text-white text-xs">Chairman, Citizenship by Investment, St. Kitts & Nevis</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={8}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={abub} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Mr. Abubakar Kyari</p>
-								<p className="text-white text-xs">Honourable Minister of Agriculture and Food Security, Nigeria</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={9}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={sama} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Hon. Samal Duggins</p>
-								<p className="text-white text-xs">Minister of Agriculture, St. Kitts & Nevis</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={10}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={denz} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">The Right Hon. Dr. Denzil Douglas</p>
-								<p className="text-white text-xs">Minister of Investment, St. Kitts & Nevis</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={11}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={wayn} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Dr. Wayne Archibald</p>
-								<p className="text-white text-xs">St. Kitts & Nevis</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={12}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={wale} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Mr. Wale Adebayo Edun</p>
-								<p className="text-white text-xs">Honourable Minister of Finance</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={13}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={robe} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Miss Robertine Webbe</p>
-								<p className="text-white text-xs">SKN Creative Economy</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={14}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={larr} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">H.E. Amb. Larry Vaughan</p>
-								<p className="text-white text-xs">Head, Regional Integration and Diaspora Unit, St. Kitts & Nevis</p>
-							</div>
-						</div>
-                    </Slide>
-                    <Slide index={15}>
-						<div className="md:w-[400px] w-full h-[240px] bg-[#2c2c2c] flex justify-center rounded-[16px] relative bg-gradient-to-t from-[#000]/50 via-[#0097fe]/10 to-[#0097fe]/70">
-							<img src={naee} className="" />
-							<div className="absolute bottom-1 left-0 right-0 rounded-b-[16px] px-5 py-2 bg-[#000]/70">
-								<p className="text-white text-xl font-500 text-left">Ms. Naeemah Hazelle</p>
-								<p className="text-white text-xs">Permanent Secretary to the Prime Minister’s Office, St. Kitts & Nevis</p>
-							</div>
-						</div>
-                    </Slide>
-
+					
+                    
 				  </Slider>
 				</CarouselProvider>
 
 
 				</div>
-				{/* <p className="text-[#00159E] text-lg font-semibold text-center pt-5 pb-10">**Final list to be confirmed.</p> */}
+				
 			</div>
 
 		</>

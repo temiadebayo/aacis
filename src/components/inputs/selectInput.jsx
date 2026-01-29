@@ -19,8 +19,8 @@ const SelectInput = ({ label, name, control, options }) => {
               {...field}
               id={name}
               className={`mt-1 block w-full px-3 py-4 border bg-transparent ${error
-                  ? "border-red-500 focus:ring-red-500 focus:border-red-500"
-                  : "border-gray-300 focus:ring-indigo-500 focus:border-indigo-500"
+                  ? "border-[#a30907] focus:ring-[#a30907] focus:border-[#a30907]"
+                  : "border-gray-300 focus:ring-[#00159E] focus:border-[#00159E]"
                 } shadow-sm sm:text-sm rounded-md`}
             >
               <option value="" readonly>
@@ -33,7 +33,7 @@ const SelectInput = ({ label, name, control, options }) => {
               ))}
             </select>
             {error && (
-              <p className="mt-2 text-sm text-red-500">{error.message}</p>
+              <p className="mt-2 text-sm text-[#a30907]">{error.message}</p>
             )}
           </>
         )}

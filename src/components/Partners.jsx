@@ -82,7 +82,7 @@ function Partners() {
 				<div className="w-full xl:mt-10">
 					<div className="text-center font-gruppo">
 						<h2 className="text-[18px] pt-2 lg:text-[28px] text-[#032642]">
-							Endorsers
+							Endorsements
 						</h2>
 					</div>
 

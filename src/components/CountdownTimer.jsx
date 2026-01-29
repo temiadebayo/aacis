@@ -51,12 +51,12 @@ const CountdownTimer = () => {
 			<div className="">
 				<div
 					// className="relative bg-cover bg-center md:h-[584px] flex items-center justify-center text-white py-10 border-4 bg-[#39663a]"
-					className="relative bg-cover bg-center md:h-[584px] flex items-center justify-center text-white py-10 bg-[#39663a]"
+					className="relative bg-cover bg-center md:h-[584px] flex items-center justify-center text-white py-10 bg-[#00159E]"
 					style={{
 						// backgroundImage: `url(${counterBg})`,
 					}}
 				>
-					<div className="absolute inset-0 bg-black bg-opacity-70 w-full h-full"></div>
+					<div className="absolute inset-0 bg-blue-opacity-70 w-full h-full"></div>
 
 					<div className="relative text-center">
 						{/* Countdown Timer */}
@@ -112,12 +112,20 @@ const CountdownTimer = () => {
 						</ScrollAnimation>
 						<div className="mt-6 md:mt-20">
 							<ScrollAnimation animateIn="fadeIn">
-								<a
-									href="/aacis/register"
-									className="cursor-pointer md:px-[40px] px-[20px] md:py-[20px] p-[10px] bg-[linear-gradient(360deg,_#032642_23.7%,_#00159E_100%)] text-white font-[600] font-montserrat md:text-[20px] text-[14px]  transition-transform transform hover:scale-105 hover:opacity-90 leading-24.38px]"
-								>
-									Register Now
-								</a>
+								<div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+									<a
+										href="/aacis/register"
+										className="cursor-pointer md:px-[40px] px-[20px] md:py-[20px] py-[12px] bg-[linear-gradient(360deg,_#fff_23.7%,_#fff_100%)] text-blue-900 font-[600] font-montserrat md:text-[20px] text-[14px] transition-transform transform hover:scale-105 hover:opacity-90 rounded-lg"
+									>
+										Register Now
+									</a>
+									<a
+										href="/aacis/volunteers"
+										className="cursor-pointer md:px-[40px] px-[20px] md:py-[20px] py-[12px] border-2 border-white text-white font-[600] font-montserrat md:text-[20px] text-[14px] transition-transform transform hover:scale-105 hover:bg-white hover:text-[#00159E] rounded-lg"
+									>
+										Volunteer
+									</a>
+								</div>
 							</ScrollAnimation>
 						</div>
 					</div>

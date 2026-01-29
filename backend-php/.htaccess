@@ -1,0 +1,35 @@
+RewriteEngine On
+
+# CORS Headers
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+Header always set Access-Control-Max-Age "3600"
+
+# Handle CORS preflight requests
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]
+
+# API Routes
+RewriteRule ^api/health/?$ api/health.php [L]
+RewriteRule ^api/registrations/?$ api/registrations.php [L]
+RewriteRule ^api/registrations/([0-9]+)/?$ api/registrations.php [L]
+RewriteRule ^api/registrations/([0-9]+)/profile-picture/?$ api/registrations.php [L]
+RewriteRule ^api/discounts/?$ api/discounts.php [L]
+RewriteRule ^api/discounts/([0-9]+)/?$ api/discounts.php [L]
+RewriteRule ^api/discounts/([a-zA-Z0-9_-]+)/?$ api/discounts.php [L]
+RewriteRule ^api/leads/?$ api/leads.php [L]
+RewriteRule ^api/flutterwave-webhook/?$ api/flutterwave-webhook.php [L]
+RewriteRule ^api/capture-email/?$ api/capture-email.php [L]
+RewriteRule ^api/send-welcome/?$ api/send-welcome.php [L]
+
+# Security headers
+Header always set X-Content-Type-Options nosniff
+Header always set X-Frame-Options DENY
+Header always set X-XSS-Protection "1; mode=block"
+
+# PHP settings
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 300
+php_value memory_limit 256M 

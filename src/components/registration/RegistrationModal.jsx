@@ -33,7 +33,7 @@ const RegistrationModal = ({ isOpen, closeModal, currency,  amount  }) => {
                 <div className="text-center">
                 <button 
                     onClick={closeModal}
-                    className="bg-red-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-600"
+                    className="bg-[#a30907] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#8a0806]"
                 >
                     Close
                 </button>

@@ -1,0 +1,24 @@
+/* Custom Cursor Styles */
+.cursor-custom-pointer {
+  cursor: none !important;
+}
+
+.cursor-custom-image {
+  cursor: none !important;
+}
+
+.cursor-custom-default {
+  cursor: none !important;
+}
+
+.cursor-custom-drag {
+  cursor: none !important;
+}
+
+.cursor-custom-navbar {
+  cursor: none !important;
+}
+
+body.custom-cursor-active {
+  cursor: none !important;
+}

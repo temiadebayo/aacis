@@ -48,6 +48,15 @@ const RegistrationHero = () => {
 		<div className=" flex items-center justify-center text-white md:h-[490px] h-[250px] md:text-left bg-transparent">
 
 			<div className="relative text-center space-y-6">
+				{/* Early Bird Registration Text */}
+				<div className="mb-4">
+					<div className="md:text-4xl text-2xl font-bold text-white mb-2">
+						Early Bird Registration
+					</div>
+					<div className="md:text-base text-sm text-white/80">
+						**valid until 31st December, 2025, T's and C's apply.
+					</div>
+				</div>
 				<button className="md:text-2xl text-[16px] font-[700] md:py-3 md:px-4 py-2 px-2 rounded-xl bg-white/20 font-montserrat">
 					Register now
 				</button>

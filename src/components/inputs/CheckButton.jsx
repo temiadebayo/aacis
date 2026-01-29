@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Controller } from "react-hook-form";
 
-function RadioInput({ label, name, control, value, title }) {
+function RadioInput({ label, name, control, value, title, earlyBirdPrice, standardPrice }) {
 	return (
 		<Controller
 			name={name}
@@ -19,11 +19,20 @@ function RadioInput({ label, name, control, value, title }) {
 						<span className="text-gray-800 md:text-[20px] text-[16px] leading-[24.38px]">
 							{label}
 						</span>
-						{title && (
+						{earlyBirdPrice && standardPrice ? (
+							<div className="flex flex-col">
+								<span className="text-green-600 md:text-[32px] text-[14px] font-[700]">
+									{earlyBirdPrice} <span className="text-sm font-normal">(Early Bird)</span>
+								</span>
+								<span className="text-gray-500 md:text-[20px] text-[12px] line-through">
+									{standardPrice} <span className="text-sm font-normal">(Standard)</span>
+								</span>
+							</div>
+						) : title ? (
 							<span className="text-black md:text-[32px] text-[14px] font-[700]">
 								{title}
 							</span>
-						)}
+						) : null}
 					</div>
 				</label>
 			)}

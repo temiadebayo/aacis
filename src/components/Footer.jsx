@@ -25,6 +25,7 @@ function Footer() {
               <li><a href="/aacis/" className="cursor-pointer hover:underline font-montserratAlt font-[400]">Home</a></li>
               <li><a href="/aacis/about" className="cursor-pointer hover:underline font-montserratAlt font-[400]">About</a></li>
               <li><a href="/aacis/register" className="cursor-pointer hover:underline font-montserratAlt font-[400]">Register</a></li>
+              <li><a href="/aacis/volunteers" className="cursor-pointer hover:underline font-montserratAlt font-[400]">Volunteers</a></li>
               {/* <li><a href="https://aquarianconsult.com/contact-us" className="cursor-pointer hover:underline font-montserratAlt font-[400]">Contact</a></li> */}
             </ul>
           </div>
@@ -33,7 +34,7 @@ function Footer() {
           <div>
             <h4 className="text-[#00159E] leading-[19.5px] text-[16px] font-[500] mb-4">Socials</h4>
             <ul className="space-y-2 text-[#787D82] md:text-[16px] text-[14px] md:leading-[19.5px] leading-[17.07px]">
-              <li><a href="https://www.instagram.com/aquarian_consult/" className="cursor-pointer hover:underline font-montserratAlt font-[400]">Instagram</a></li>
+              <li><a href="https://www.instagram.com/aquarianconsult/" className="cursor-pointer hover:underline font-montserratAlt font-[400]">Instagram</a></li>
               <li><a href="https://www.youtube.com/@TheAquarianConsult" className="cursor-pointer hover:underline font-montserratAlt font-[400]">Youtube</a></li>
               {/* <li><a href="https://www.x.com/AquarianConsult" className="cursor-pointer hover:underline font-montserratAlt font-[400]">Twitter</a></li> */}
               <li><a href="https://www.facebook.com/AquarianConsult" className="cursor-pointer hover:underline font-montserratAlt font-[400]">Facebook</a></li>
@@ -63,7 +64,7 @@ function Footer() {
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row md:items-center justify-between">
           <div>
-            <img src={logo} alt="" className='w-[134px] md:h-[36px]' />
+            <img src={logo} alt="" className='w-[auto] md:h-[36px]' />
           </div>
           <div className="flex space-x-4 mt-4 md:mt-0">
           <a href="https://www.youtube.com/@TheAquarianConsult" className="text-[#787D82] text-[16px] leading-[19.5px] hover:text-blue-800">

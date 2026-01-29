@@ -8,7 +8,6 @@ import Little1 from "../assets/little1.png";
 import Little2 from "../assets/little2.png";
 import ArrowUp from "../assets/arrow-up.svg";
 import ArrowDown from "../assets/arrow-down.svg";
-import ConciergeLogistics from "../components/ConciergeLogistics";
 import CountdownTimer from "../components/CountdownTimer";
 import Uln from "../assets/theme_underline.png";
 
@@ -80,8 +79,8 @@ function About() {
 						</div>
 						<div className="bg-[#00159E] text-white  py-10 col-span-2 md:col-span-1">
 							<h3 className="text-2xl font-michroma md:text-[36px] md:leading-[51.19px] font-[400]">
-								<CountUp end={3000} />+
-								{/* 3,000+ */}
+								<CountUp end={1000} />+
+								{/* 1,000+ */}
 							</h3>
 							<p className="font-montserrat text-sm md:text-[18px] md:leading-[21.94px] font-[500]">
 								Attendees
@@ -292,7 +291,6 @@ function About() {
 
 			</div>
 
-			<ConciergeLogistics />
 			<Mentions />
 			<Partners />
 

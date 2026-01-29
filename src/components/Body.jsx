@@ -39,25 +39,269 @@ import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 import { images } from "../services/galleryData";
 
+// Custom Cursor Component
+function CustomCursor() {
+  const [cursor, setCursor] = useState({ x: 0, y: 0 });
+  const [isVisible, setIsVisible] = useState(false);
+  const [cursorType, setCursorType] = useState('default');
+
+  useEffect(() => {
+    const updateCursor = (e) => {
+      setCursor({ x: e.clientX, y: e.clientY });
+      setIsVisible(true);
+    };
+
+    const handleMouseEnter = () => {
+      setIsVisible(true);
+      document.body.classList.add('custom-cursor-active');
+    };
+    
+    const handleMouseLeave = () => {
+      setIsVisible(false);
+      document.body.classList.remove('custom-cursor-active');
+    };
+
+    document.addEventListener('mousemove', updateCursor);
+    document.addEventListener('mouseenter', handleMouseEnter);
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    // Add cursor type detection
+    const handleMouseOver = (e) => {
+      const target = e.target;
+      if (target.closest('.cursor-custom-navbar') || target.closest('nav') || target.closest('header')) {
+        setCursorType('navbar');
+      } else if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button')) {
+        setCursorType('pointer');
+      } else if (target.tagName === 'IMG' || target.closest('img')) {
+        setCursorType('image');
+      } else if (target.closest('.carousel') || target.closest('.slider') || target.closest('[data-carousel]')) {
+        setCursorType('drag');
+      } else if (target.closest('.cursor-custom-pointer')) {
+        setCursorType('pointer');
+      } else if (target.closest('.cursor-custom-image')) {
+        setCursorType('image');
+      } else if (target.closest('.cursor-custom-drag')) {
+        setCursorType('drag');
+      } else {
+        setCursorType('default');
+      }
+    };
+
+    document.addEventListener('mouseover', handleMouseOver);
+
+    // Add click effect
+    const handleClick = () => {
+      setCursorType('click');
+      setTimeout(() => {
+        // Reset cursor type after click animation
+        const target = document.elementFromPoint(cursor.x, cursor.y);
+        if (target) {
+          if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.closest('a') || target.closest('button')) {
+            setCursorType('pointer');
+          } else if (target.tagName === 'IMG' || target.closest('img')) {
+            setCursorType('image');
+          } else {
+            setCursorType('default');
+          }
+        }
+      }, 150);
+    };
+
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('mousemove', updateCursor);
+      document.removeEventListener('mouseenter', handleMouseEnter);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+      document.removeEventListener('mouseover', handleMouseOver);
+      document.removeEventListener('click', handleClick);
+      document.body.classList.remove('custom-cursor-active');
+    };
+  }, [cursor.x, cursor.y]);
+
+  if (!isVisible) return null;
+
+  return (
+    <>
+      {/* Main cursor dot */}
+      <div
+        className={`fixed pointer-events-none z-[9990] transition-all duration-150 ease-out ${
+          cursorType === 'default' ? 'w-4 h-4' : 
+          cursorType === 'pointer' ? 'w-6 h-6' : 
+          cursorType === 'image' ? 'w-8 h-8' : 
+          cursorType === 'drag' ? 'w-5 h-5' : 
+          cursorType === 'click' ? 'w-3 h-3' : 
+          cursorType === 'navbar' ? 'w-7 h-7' : 'w-4 h-4'
+        }`}
+        style={{
+          left: cursor.x - (cursorType === 'default' ? 8 : cursorType === 'pointer' ? 12 : cursorType === 'image' ? 16 : cursorType === 'drag' ? 10 : cursorType === 'click' ? 6 : cursorType === 'navbar' ? 14 : 8),
+          top: cursor.y - (cursorType === 'default' ? 8 : cursorType === 'pointer' ? 12 : cursorType === 'image' ? 16 : cursorType === 'drag' ? 10 : cursorType === 'click' ? 6 : cursorType === 'navbar' ? 14 : 8),
+        }}
+      >
+        <div className={`w-full h-full rounded-full transition-all duration-300 ${
+          cursorType === 'default' ? 'bg-[#00159E]/20 border border-[#00159E]/40' : 
+          cursorType === 'pointer' ? 'bg-[#f0790c] border-2 border-white shadow-lg scale-125' : 
+          cursorType === 'image' ? 'bg-[#032642] border-2 border-white shadow-lg scale-150' : 
+          cursorType === 'drag' ? 'bg-[#39663a] border-2 border-white shadow-lg scale-110' : 
+          cursorType === 'click' ? 'bg-[#a30907] border-2 border-white shadow-lg scale-75' : 
+          cursorType === 'navbar' ? 'bg-[#00159E] border-2 border-white shadow-lg scale-110' : 'bg-[#00159E]/20 border border-[#00159E]/40'
+        }`} />
+      </div>
+
+      {/* Trailing cursor ring */}
+      <div
+        className="fixed pointer-events-none z-[9989] w-8 h-8 rounded-full border-2 border-[#00159E]/30 transition-all duration-300 ease-out"
+        style={{
+          left: cursor.x - 16,
+          top: cursor.y - 16,
+        }}
+      />
+
+      {/* Click ripple effect */}
+      {cursorType === 'click' && (
+        <div
+          className="fixed pointer-events-none z-[9988] w-16 h-16 rounded-full border-2 border-[#a30907]/50 animate-ping"
+          style={{
+            left: cursor.x - 32,
+            top: cursor.y - 32,
+          }}
+        />
+      )}
+    </>
+  );
+}
+
+
+// SponsorBriefSection: Brief info and CTA for sponsorship
+function SponsorBriefSection() {
+  return (
+    <section className="bg-white bg-[url(/src/assets/themed_bg.png)] bg-repeat bg-contain xl:p-10 p-2 my-8">
+      <div className="md:py-16 py-8 bg-gradient-to-b from-[#fff] via-[#fff]/100 to-[#fff]">
+        <div className="container mx-auto px-4 xl:px-20 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex-1">
+            <h2 className="text-3xl md:text-5xl font-gruppo font-[200] text-[#00159E] mb-4">Become a Sponsor</h2>
+            <p className="text-lg text-[#032642] mb-4 font-montserrat font-[400]">Showcase your brand to a global audience of investors, policymakers, and business leaders at the AACIS Summit. Sponsorship offers unique opportunities for visibility, networking, and impact across Africa and the Caribbean.</p>
+            <ul className="list-disc pl-6 text-gray-700 text-base mb-4 font-montserrat">
+              <li>Brand exposure to high-level delegates and media</li>
+              <li>Exclusive networking with decision-makers</li>
+              <li>Customizable sponsorship packages</li>
+              <li>Opportunities to host sessions or exhibit</li>
+            </ul>
+            <div className="flex flex-col md:flex-row gap-4 mt-6">
+              <a
+                href="/aacis/sponsors"
+                className="px-8 py-3 bg-gradient-to-r from-[#032642] to-[#00159E] text-white font-semibold rounded-lg shadow hover:scale-105 hover:opacity-90 transition text-center"
+              >
+                Read More
+              </a>
+              <a
+                href="mailto:aacis@aquarianconsult.com"
+                className="px-8 py-3 border-2 border-[#00159E] text-[#00159E] font-semibold rounded-lg hover:bg-[#00159E] hover:text-white transition text-center"
+              >
+                Contact Us
+              </a>
+            </div>
+          </div>
+          <div className="flex-1 flex justify-center items-center">
+            {/* Optionally add a sponsor/brand image or icon here */}
+            <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="60" cy="60" r="60" fill="#00159E" fillOpacity="0.08" />
+              <path d="M40 80L60 40L80 80H40Z" fill="#00159E" fillOpacity="0.2" />
+              <circle cx="60" cy="60" r="18" fill="#00159E" fillOpacity="0.3" />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 function Body() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [currentSummit, setCurrentSummit] = useState('main');
+	
 	useEffect(() => {
-		new Typewriter("#typewriter", {
+		const typewriter = new Typewriter("#typewriter", {
 			strings: [
-				"ACL’S Afri-Caribbean Investment Summit (AACIS ‘26).",
+				"ACL's Afri-Caribbean Investment Summit (AACIS '26).",
+				"ACL's Afri-Caribbean Agriculture & Food Security Summit (AACAFSS'26).",
 				"In Partnership with the Government of St Kitts and Nevis.",
+				"ACL's Afri-Caribbean Health Summit - March 26, 2026",
 				"One Voice, One Vision: Advancing Afri-Caribbean Unity.",
 				"2 Continents, 4 Days, 40 Speakers. Unlimited Opportunities.",
-				"The Countdown has begun. Register Now.",
+				"The Countdown Has Begun. Register Now.",
+				"Join Us For Specialized Summits Addressing Critical Regional Challenges.",
 			],
 			autoStart: true,
 			loop: true,
+			onStringTyped: (stringIndex) => {
+				// Pre-assign each string index to its corresponding summit/date
+				switch (stringIndex) {
+					case 0: // "ACL'S Afri-Caribbean Investment Summit (AACIS '26)."
+						setCurrentSummit('main');
+						break;
+					case 1: // "ACL's Afri-Caribbean Agriculture & Food Security Summit (AAAFSS'26)."
+						setCurrentSummit('agric');
+						break;
+					case 2: // "In Partnership with the Government of St Kitts and Nevis."
+						setCurrentSummit('main');
+						break;
+					case 3: // "ACL's Afri-Caribbean Health Summit - March 26, 2026"
+						setCurrentSummit('health');
+						break;
+					case 4: // "One Voice, One Vision: Advancing Afri-Caribbean Unity."
+						setCurrentSummit('main');
+						break;
+					case 5: // "2 Continents, 4 Days, 40 Speakers. Unlimited Opportunities."
+						setCurrentSummit('main');
+						break;
+					case 6: // "The Countdown Has Begun. Register Now."
+						setCurrentSummit('main');
+						break;
+					case 7: // "Join Us For Specialized Summits Addressing Critical Regional Challenges."
+						setCurrentSummit('main');
+						break;
+					default:
+						setCurrentSummit('main');
+				}
+			}
 		});
-	});
+
+		return () => {
+			typewriter.stop();
+		};
+	}, []);
+
+	// Function to get the appropriate date and location based on current summit
+	const getDateAndLocation = () => {
+		switch (currentSummit) {
+			case 'agric':
+				return {
+					date: "March 23 - 24, 2026",
+					location: "Abuja, Nigeria",
+					description: "Agriculture & Food Security Summit"
+				};
+			case 'health':
+				return {
+					date: "March 26, 2026",
+					location: "Abuja, Nigeria",
+					description: "Health Summit"
+				};
+			default:
+				return {
+					date: "March 23 - 28, 2026",
+					location: "Abuja, Nigeria",
+					description: "Main Investment Summit"
+				};
+		}
+	};
+
+	const summitInfo = getDateAndLocation();
 
 	return (
 		<main className="">
+			<CustomCursor />
 			<div className="text-center gap-10 bg-white ">
 				<div className="flex flex-col py-5 xl:py-20 container z-[2px]">
 					<div className="pt-5 pb-0 xl:flex">
@@ -66,7 +310,7 @@ function Body() {
 								id="typewriter"
 								className="text-[30px] md:text-[52px] font-[700] md:leading-[58px] leading-[48.76px] bg-gradient-to-r from-[#00159E] to-[#032642] text-transparent bg-clip-text font-montserrat text-left"
 							>
-								{/* ACL’S AFRI-CARIBBEAN */}
+								{/* ACL'S AFRI-CARIBBEAN */}
 							</h1>
 							<div className="flex flex-col md:flex-row my-8">
 								<div className="flex md:pr-6">
@@ -84,9 +328,17 @@ function Body() {
 											/>
 										</svg>
 									</div>
-									<b className="font-montserrat text-[16px] md:text-[20px] font-[300] text-black md:leading-[34.1px] leading-[19.41px]">
-										March 25 - 28, 2026
-									</b>
+									<div className="flex flex-col">
+										<b className="font-montserrat text-[16px] md:text-[20px] font-[300] text-black md:leading-[34.1px] leading-[19.41px]">
+											{summitInfo.date}
+										</b>
+										{/* Summit indicator */}
+										{currentSummit !== 'main' && (
+											<span className="text-xs text-[#00159E] font-medium opacity-80">
+												{summitInfo.description}
+											</span>
+										)}
+									</div>
 								</div>
 
 								<div className="flex">
@@ -104,26 +356,34 @@ function Body() {
 											/>
 										</svg>
 									</div>
-									<b className="font-montserrat text-[16px] md:text-[20px] font-[300] text-black leading-[34.1px]">
-										Abuja, Nigeria
-									</b>
+									<div className="flex flex-col">
+										<b className="font-montserrat text-[16px] md:text-[20px] font-[300] text-black leading-[34.1px]">
+											{summitInfo.location}
+										</b>
+										{/* Summit indicator */}
+										{currentSummit !== 'main' && (
+											<span className="text-xs text-[#00159E] font-medium opacity-80">
+												{summitInfo.description}
+											</span>
+										)}
+									</div>
 								</div>
 							</div>
 						</div>
 						<div className="flex self-center gap-5">
 							<a
 								href="/aacis/register"
-								className="relative cursor-pointer p-[10px] bg-[linear-gradient(360deg,_#032642_23.7%,_#00159E_100%)] text-white font-[600] font-montserrat md:text-[20px] text-[14px]  transition-transform transform hover:scale-105 hover:opacity-90 leading-24.38px] flex justify-center items-center"
+								className="relative cursor-pointer p-[10px] bg-[linear-gradient(360deg,_#032642_23.7%,_#00159E_100%)] text-white font-[600] font-montserrat md:text-[20px] text-[14px]  transition-transform transform hover:scale-105 hover:opacity-90 leading-24.38px] flex justify-center items-center cursor-custom-pointer"
 							>
 								<span class="cursor-pointer absolute right-[-2px] top-[-2px] h-[10px] w-[10px] animate-ping rounded-full bg-[#f0790c] "></span>
 								<span className="cursor-pointer">REGISTER NOW</span>
 							</a>
 
 							<a
-								href="/aacis/AACIS_25_brochure.pdf"
+								href="/aacis/AACIS26_brochure.pdf"
 								target="_blank"
 								rel="noreferrer"
-								className="cursor-pointer p-[10px] border-4 border-[#00159E] text-[#00159E] font-[600] font-montserrat md:text-[20px] text-[14px]  transition-transform transform hover:scale-105 hover:opacity-90 leading-24.38px]"
+								className="cursor-pointer p-[10px] border-4 border-[#00159E] text-[#00159E] font-[600] font-montserrat md:text-[20px] text-[14px]  transition-transform transform hover:scale-105 hover:opacity-90 leading-24.38px] cursor-custom-pointer"
 							>
 								DOWNLOAD BROCHURE
 							</a>
@@ -137,9 +397,9 @@ function Body() {
 						</div>
 					</div>
 					<div className="z-[-1px] rounded-b-2xl w-[100%] border-0">
-						<img src={theme_up} />
+						<img src={theme_up} className="cursor-custom-image" />
 						<video
-							className="rounded-b-2xl border-0 "
+							className="rounded-b-2xl border-0 cursor-custom-image"
 							playsInline
 							autoPlay
 							loop
@@ -166,12 +426,12 @@ function Body() {
 						<div className="">
 							<img
 								src={st_kitts_coat}
-								className="hidden md:block"
+								className="hidden md:block cursor-custom-image"
 								alt=""
 							/>
 							<img
 								src={st_kitts_coat_sm}
-								className="md:hidden"
+								className="md:hidden cursor-custom-image"
 								alt=""
 							/>
 						</div>
@@ -212,10 +472,10 @@ function Body() {
 						<div className=" rounded-xl relative">
 							<div className="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 bottom-1">
 								<ScrollAnimation animateIn="fadeInUp" delay={1}>
-									<div className="rounded-[16px]  xl:min-h-[250px]">
+									<div className="rounded-[16px]  xl:min-h-[250px] cursor-custom-default hover:scale-105 transition-transform duration-300">
 										<img
 											src={shieldIcon}
-											className="mb-2"
+											className="mb-2 cursor-custom-image"
 										/>
 										<h3 className="md:text-[20px] text-[16px] font-[600] text-[#032642] font-montserrat">
 											Plenary Sessions
@@ -232,10 +492,10 @@ function Body() {
 									</div>
 								</ScrollAnimation>
 								<ScrollAnimation animateIn="fadeInUp" delay={2}>
-									<div className="rounded-[16px] xl:min-h-[250px]">
+									<div className="rounded-[16px] xl:min-h-[250px] cursor-custom-default hover:scale-105 transition-transform duration-300">
 										<img
 											src={shieldIcon}
-											className="mb-2"
+											className="mb-2 cursor-custom-image"
 										/>
 										<h3 className="md:text-[20px] text-[16px] font-[600] text-[#032642] font-montserrat">
 											Networking Sessions
@@ -249,10 +509,10 @@ function Body() {
 									</div>
 								</ScrollAnimation>
 								<ScrollAnimation animateIn="fadeInUp" delay={3}>
-									<div className="rounded-[16px] xl:min-h-[250px]">
+									<div className="rounded-[16px] xl:min-h-[250px] cursor-custom-default hover:scale-105 transition-transform duration-300">
 										<img
 											src={shieldIcon}
-											className="mb-2"
+											className="mb-2 cursor-custom-image"
 										/>
 										<h3 className="md:text-[20px] text-[16px] font-[600] text-[#032642] font-montserrat">
 											Breakout Sessions
@@ -265,10 +525,10 @@ function Body() {
 									</div>
 								</ScrollAnimation>
 								<ScrollAnimation animateIn="fadeInUp" delay={2}>
-									<div className="rounded-[16px] xl:min-h-[250px]">
+									<div className="rounded-[16px] xl:min-h-[250px] cursor-custom-default hover:scale-105 transition-transform duration-300">
 										<img
 											src={shieldIcon}
-											className="mb-2"
+											className="mb-2 cursor-custom-image"
 										/>
 										<h3 className="md:text-[20px] text-[16px] font-[600] text-[#032642] font-montserrat">
 											Exhibition Floor
@@ -292,7 +552,7 @@ function Body() {
 
 			<div className="bg-white  bg-[url(/src/assets/themed_bg.png)] bg-repeat bg-contain xl:p-10 p-2">
 				{/* <div className="md:py-16 py-8   bg-gradient-to-b from-[#fff] via-[#f0790c]/40 to-[#fff]"> */}
-				<div className="md:py-16 py-8  bg-gradient-to-b from-[#fff] via-[#f0790c]/100 to-[#fff]">
+				<div className="md:py-16 py-8  bg-gradient-to-b from-[#fff] via-[#fff]/100 to-[#fff]">
 					<div className="container">
 						<div className="font-gruppo flex flex-col text-[24px] md:text-[54px] xl:text-[96px] leading-[35px] md:leading-[65px] xl:leading-[85px] font-[200] text-[#39663a] text-center md:text-left">
 							<ScrollAnimation animateIn="fadeInUp">
@@ -308,15 +568,14 @@ function Body() {
 								<ScrollAnimation animateIn="fadeInUp">
 									<p className="md:text-[16px] font-montserrat md:leading-[28px] font-[400] text-[14px] leading-[24px]">
 										The AACIS presents a unique opportunity to
-										shape the future of African-Caribbean
+										shape the future of Afri-Caribbean
 										relations. With a firm commitment to
 										fostering cross-regional economic growth,
-										the summit will serve as a platform for
+										the summit serves as a platform for
 										offering strategic discussions, unparalleled
 										opportunities for high-value investments,
 										networking and partnership building, and
-										cultural exchange between Africa and St.
-										Kitts and Nevis. The summit is set to
+										cultural exchange between Africa and the Caribbean. The summit is set to
 										deliver exceptional value to all
 										participants through a carefully curated
 										agenda, top-tier speakers, and an exhibition
@@ -327,7 +586,7 @@ function Body() {
 							<div className="grid grid-cols-1 md:grid-cols-3 md:col-span-2 gap-5 pb-10">
 								<ScrollAnimation animateIn="fadeInUp">
 									<div className="flex items-start space-x-4">
-										<img src={shieldIcon} className="mt-0" />
+										<img src={shieldIcon} className="mt-0 cursor-custom-image" />
 										<p className="md:text-[16px] font-montserrat md:leading-[28px] font-[400] text-[14px] leading-[24px]">
 											Discover untapped investment potential
 											in the Caribbean and Africa, and learn
@@ -339,31 +598,26 @@ function Body() {
 								</ScrollAnimation>
 								<ScrollAnimation animateIn="fadeInUp">
 									<div className="flex items-start space-x-4">
-										<img src={shieldIcon} className="mt-0" />
+										<img src={shieldIcon} className="mt-0 cursor-custom-image" />
 										<p className="md:text-[16px] font-montserrat md:leading-[28px] font-[400] text-[14px] leading-[24px]">
 											Understand the strategic importance of
 											St. Kitts and Nevis within the OECS, and
 											its benefits as an investment
-											destination. Learn how to leverage
-											cross-continental partnerships to scale
-											your business and enhance profitability.
+											destination.
 										</p>
 									</div>
 								</ScrollAnimation>
 								<ScrollAnimation animateIn="fadeInUp">
 									<div className="flex items-start space-x-4">
-										<img src={shieldIcon} className="mt-0" />
+										<img src={shieldIcon} className="mt-0 cursor-custom-image" />
 										<p className="md:text-[16px] font-montserrat md:leading-[28px] font-[400] text-[14px] leading-[24px]">
-											Gain valuable insights from sessions on
-											topics like Overcoming Trade Barriers,
-											Building Sustainable International
-											Businesses, and Accessing Capital.
+										Learn how to leverage cross-continental partnerships to scale your business and enhance profitability.
 										</p>
 									</div>
 								</ScrollAnimation>
 								<ScrollAnimation animateIn="fadeInUp">
 									<div className="flex items-start space-x-4">
-										<img src={shieldIcon} className="mt-0" />
+										<img src={shieldIcon} className="mt-0 cursor-custom-image" />
 										<p className="md:text-[16px] font-montserrat md:leading-[28px] font-[400] text-[14px] leading-[24px]">
 											Participate in the exhibition floor to
 											showcase your products or services to a
@@ -375,24 +629,21 @@ function Body() {
 								</ScrollAnimation>
 								<ScrollAnimation animateIn="fadeInUp">
 									<div className="flex items-start space-x-4">
-										<img src={shieldIcon} className="mt-0" />
+										<img src={shieldIcon} className="mt-0 cursor-custom-image" />
 										<p className="md:text-[16px] font-montserrat md:leading-[28px] font-[400] text-[14px] leading-[24px]">
 											Experience a blend of knowledge-sharing
 											and cultural enrichment, including a
 											gala night showcasing African and
-											Caribbean heritage. Take part in a
-											guided tour of Abuja, exploring the
-											city&apos;s culture and business
-											environment.
+											Caribbean heritage.
 										</p>
 									</div>
 								</ScrollAnimation>
 								<ScrollAnimation animateIn="fadeInUp">
 									<div className="flex items-start space-x-4">
-										<img src={shieldIcon} className="mt-0" />
+										<img src={shieldIcon} className="mt-0 cursor-custom-image" />
 										<p className="md:text-[16px] font-montserrat md:leading-[28px] font-[400] text-[14px] leading-[24px]">
 											Be a part of shaping the future of
-											Africa-Caribbean economic collaboration.
+											Afri-Caribbean economic collaboration.
 											Influence discussions and outcomes that
 											could redefine global trade between the
 											two regions.
@@ -404,7 +655,7 @@ function Body() {
 								<ScrollAnimation animateIn="fadeInUp">
 									<a
 										href="/aacis/register"
-										className="cursor-pointer p-[20px] bg-[linear-gradient(360deg,_#032642_23.7%,_#00159E_100%)] text-white font-[600] font-montserrat md:text-[20px] text-[14px]  transition-transform transform hover:scale-105 hover:opacity-90 leading-24.38px]"
+										className="cursor-pointer p-[20px] bg-[linear-gradient(360deg,_#032642_23.7%,_#00159E_100%)] text-white font-[600] font-montserrat md:text-[20px] text-[14px]  transition-transform transform hover:scale-105 hover:opacity-90 leading-24.38px] cursor-custom-pointer"
 									>
 										REGISTER NOW
 									</a>
@@ -419,7 +670,7 @@ function Body() {
 				<div className="container 2xl:pt-[170px] 3xl:pt-[250px] lg:pt-24 md:pt-16 pt-5">
 					<div className="flex flex-col items-center align-center text-center font-gruppo">
 						<h2 className="text-[24px] md:text-[54px] xl:text-[96px] leading-[35px]  md:leading-[65px] xl:leading-[85px] font-[200] text-[#39663a] md:pb-4">
-							Who Will Benefit From Attending?
+							Delegates
 						</h2>
 						<p className="text-[#000000] md:text-[20px] text-[14px] md:leading-[24px] leading-[18px] md:w-[70%] lg:w-[50%] w-[100%] font-[200]">
 							AACIS is designed for a diverse range of
@@ -651,13 +902,25 @@ function Body() {
 								</CarouselProvider>
 							</div>
 						</ScrollAnimation>
+						
+						{/* CTA after Who Will Benefit section */}
+						<div className="text-center mt-8 mb-8">
+							<ScrollAnimation animateIn="fadeInUp">
+								<div className="bg-gradient-to-r from-[#00159E] to-[#032642] rounded-2xl p-8 text-white">
+									<h3 className="text-2xl md:text-3xl font-gruppo font-[300] mb-4">Ready to Join the Movement?</h3>
+									<p className="text-lg mb-6 font-montserrat opacity-90">Don't miss this historic opportunity to shape the future of Afri-Caribbean collaboration</p>
+									<a
+										href="/aacis/register"
+										className="inline-block bg-white text-[#00159E] font-semibold px-8 py-4 rounded-lg hover:scale-105 hover:bg-gray-100 transition-all duration-300 text-lg cursor-custom-pointer"
+									>
+										🎫 REGISTER NOW - Secure Your Spot
+									</a>
+								</div>
+							</ScrollAnimation>
+						</div>
+						
 						<div className="md:mb-20 mb-5 mt-10 text-center">
-							<a
-							href="/aacis/gallery"
-								className="cursor-pointer p-[10px] border-4 border-[#00159E] text-[#00159E] font-[600] font-montserrat md:text-[20px] text-[14px] hover:scale-105 hover:opacity-90"
-							>
-								VIEW PHOTOS AND VIDEOS
-							</a>
+							
 						</div>
 					</div>
 				</div>
@@ -665,113 +928,144 @@ function Body() {
 			</div>
 
 			<KeynoteSpeaker />
+			
 			{/* Move summit sections here, before Who Will Benefit From Attending */}
 			<div className="w-full flex flex-col gap-12 my-12">
 				{/* Agriculture Summit */}
-				<section className="relative w-full bg-gradient-to-br from-[#e0f2ff] via-[#f0f9ff] to-[#e6e6ff] shadow-lg rounded-2xl py-8 md:py-12 border border-[#00159E]/10 overflow-hidden animate-fadeInUp">
-					<div className="absolute -top-8 -right-8 opacity-10 text-[10rem] pointer-events-none select-none">🌾</div>
-					<div className="container mx-auto px-3 xl:px-20">
-						<h2 className="text-3xl md:text-5xl font-extrabold text-[#00159E] mb-2 text-center drop-shadow-lg">Afri-Caribbean Agriculture Food Security Summit</h2>
-						<p className="text-center text-lg text-[#032642] mb-4 font-semibold">23-24 March 2026</p>
-						<div className="flex flex-col md:flex-row gap-8 items-center justify-center mb-8">
-							<div className="flex flex-col items-center">
-								<img src="https://via.placeholder.com/120x120?text=Abubakar+Kyari" alt="Hon. Sen. Abubakar Kyari" className="rounded-full w-28 h-28 object-cover border-4 border-[#00159E] shadow-md" />
-								<span className="mt-2 font-bold text-[#00159E]">Hon. Sen. Abubakar Kyari</span>
-								<span className="text-xs text-gray-600">Ministry of Agriculture & Food Security, Nigeria</span>
+				<section className="bg-white bg-[url(/src/assets/themed_bg.png)] bg-repeat bg-contain xl:p-10 p-2">
+					<div className="md:py-16 py-8 bg-gradient-to-b from-[#fff] via-[#fff]/100 to-[#fff]">
+						<div className="container mx-auto px-3 xl:px-20">
+							<div className="relative">
+								<div className="absolute -top-8 -right-8 opacity-10 text-[10rem] pointer-events-none select-none">🌾</div>
+								<h2 className="text-3xl md:text-5xl font-gruppo font-[200] text-[#00159E] mb-2 text-center drop-shadow-lg">Afri-Caribbean Agriculture And Food Security Summit</h2>
+								<p className="text-center text-lg text-[#032642] mb-4 font-montserrat font-[400]">23-24 March 2026</p>
+								<div className="flex flex-col md:flex-row gap-8 items-center justify-center mb-8">
+									<div className="flex flex-col items-center">
+										<img src="https://aquarianconsult.com/aacis/assets/abub-CqevBWf_.jpg" alt="Hon. Sen. Abubakar Kyari" className="rounded-full w-28 h-28 object-cover border-4 border-[#39663a] shadow-md cursor-custom-image hover:scale-105 transition-transform duration-300" />
+										<span className="mt-2 font-bold text-[#39663a]">Hon. Sen. Abubakar Kyari</span>
+										<span className="text-xs text-gray-600">Ministry of Agriculture & Food Security, Nigeria</span>
+									</div>
+									<div className="flex flex-col items-center">
+										<img src="https://aquarianconsult.com/aacis/assets/sama-Cdu4Or18.jpg" alt="Hon. Samal Duggins" className="rounded-full w-28 h-28 object-cover border-4 border-[#39663a] shadow-md cursor-custom-image hover:scale-105 transition-transform duration-300" />
+										<span className="mt-2 font-bold text-[#39663a]">Hon. Samal Duggins</span>
+										<span className="text-xs text-gray-600">Ministry of Agriculture, St. Kitts & Nevis</span>
+									</div>
+								</div>
+								<p className="mb-4 text-center text-gray-700 text-lg italic font-montserrat">Africa and the Caribbean share common challenges in agriculture, including climate vulnerability, food insecurity, and trade barriers. Yet, both regions possess untapped potential for collaboration in sustainable agri-food systems, technology transfer, and intra-regional trade.</p>
+
+								
+								
+								
+								
+								
+								{/* CTA after Agriculture Summit */}
+								<div className="text-center mt-8">
+									<ScrollAnimation animateIn="fadeInUp">
+										<div className="bg-gradient-to-r from-[#39663a] to-[#4a7c59] rounded-xl p-6 text-white">
+											<h3 className="text-xl font-gruppo font-[300] mb-3">Ready to Transform Agriculture?</h3>
+											<p className="text-sm mb-4 font-montserrat opacity-90">Join the Agriculture Summit and be part of the solution</p>
+											<a
+												href="/aacis/register"
+												className="inline-block bg-white text-[#39663a] font-semibold px-6 py-3 rounded-lg hover:scale-105 hover:bg-gray-100 transition-all duration-300 cursor-custom-pointer"
+											>
+												🌾 Register for Agriculture Summit
+											</a>
+										</div>
+									</ScrollAnimation>
+								</div>
+								<div className="text-center mt-6">
+									<a
+										href="/aacis/agric-summit"
+										className="inline-block bg-gradient-to-r from-[#39663a] to-[#39663a] text-white font-montserrat font-[600] px-8 py-3 rounded-lg hover:scale-105 transition-transform cursor-custom-pointer"
+									>
+										Learn More
+									</a>
+								</div>
 							</div>
-							<div className="flex flex-col items-center">
-								<img src="https://via.placeholder.com/120x120?text=Samal+Duggins" alt="Hon. Samal Duggins" className="rounded-full w-28 h-28 object-cover border-4 border-[#00159E] shadow-md" />
-								<span className="mt-2 font-bold text-[#00159E]">Hon. Samal Duggins</span>
-								<span className="text-xs text-gray-600">Ministry of Agriculture, St. Kitts & Nevis</span>
-							</div>
-						</div>
-						<p className="mb-4 text-center text-gray-700 text-lg italic">Africa and the Caribbean share common challenges in agriculture, including climate vulnerability, food insecurity, and trade barriers. Yet, both regions possess untapped potential for collaboration in sustainable agri-food systems, technology transfer, and intra-regional trade.</p>
-						<div className="grid md:grid-cols-3 gap-6 mb-6">
-							<div className="bg-white/80 rounded-xl p-4 shadow flex flex-col items-center">
-								<span className="text-3xl mb-2">🤝</span>
-								<b className="text-[#00159E]">Leverage Shared Priorities</b>
-								<p className="text-sm mt-1">Align the African Union’s Agenda 2063 and CARICOM’s 25% Food Import Reduction Goal.</p>
-							</div>
-							<div className="bg-white/80 rounded-xl p-4 shadow flex flex-col items-center">
-								<span className="text-3xl mb-2">💡</span>
-								<b className="text-[#00159E]">Catalyze Investment</b>
-								<p className="text-sm mt-1">Showcase scalable innovations in climate-smart agriculture, agro-processing, and digital solutions.</p>
-							</div>
-							<div className="bg-white/80 rounded-xl p-4 shadow flex flex-col items-center">
-								<span className="text-3xl mb-2">📜</span>
-								<b className="text-[#00159E]">Strengthen Policy Frameworks</b>
-								<p className="text-sm mt-1">Harmonize standards for cross-regional trade, food security, and sovereignty.</p>
-							</div>
-						</div>
-						<div className="grid md:grid-cols-2 gap-6 mb-6">
-							<div className="bg-[#f0f9ff]/80 rounded-xl p-4 shadow">
-								<h3 className="text-lg font-bold mb-2 text-[#00159E]">Objectives</h3>
-								<ul className="list-disc pl-6 text-gray-700 text-sm">
-									<li>Policy Dialogue: Address barriers to Afri-Caribbean agri-trade (e.g., tariffs, logistics, SPS measures).</li>
-									<li>Public-Private Partnerships: Mobilize investments in joint ventures.</li>
-									<li>Knowledge Exchange: Share best practices in climate resilience, youth agripreneurship, and circular agriculture.</li>
-									<li>Joint Declaration: Adopt a Ministerial Action Plan with concrete commitments (e.g., AU-CARICOM Agri-Trade Task Force).</li>
-								</ul>
-							</div>
-							<div className="bg-[#f0f9ff]/80 rounded-xl p-4 shadow">
-								<h3 className="text-lg font-bold mb-2 text-[#00159E]">Key Components</h3>
-								<ul className="list-disc pl-6 text-gray-700 text-sm">
-									<li>Ministerial Roundtable: Closed-door session for actionable accords.</li>
-									<li>Innovation Showcase: Pitch sessions for agri-tech startups and SMEs.</li>
-									<li>B2B/B2G Meetings: Matchmaking for investors, exporters, and policymakers.</li>
-								</ul>
-							</div>
-						</div>
-						<div className="bg-[#e0f2ff]/60 rounded-xl p-4 shadow mb-2">
-							<h3 className="text-lg font-bold mb-2 text-[#00159E]">Expected Outcomes</h3>
-							<ul className="list-disc pl-6 text-gray-700 text-sm">
-								<li>Policy: Signed MoUs on agri-trade facilitation and R&D collaboration.</li>
-								<li>Investment: Pipeline of Afri-Caribbean agri-business deals.</li>
-								<li>Media Impact: Global coverage highlighting cross-regional solidarity.</li>
-							</ul>
 						</div>
 					</div>
 				</section>
 				{/* Health Summit */}
-				<section className="relative w-full bg-gradient-to-br from-[#e0f2ff] via-[#fff0f6] to-[#e6e6ff] shadow-lg rounded-2xl py-8 md:py-12 border border-[#00159E]/10 overflow-hidden animate-fadeInUp">
-					<div className="absolute -top-8 -right-8 opacity-10 text-[10rem] pointer-events-none select-none">🩺</div>
-					<div className="container mx-auto px-3 xl:px-20">
-						<h2 className="text-3xl md:text-5xl font-extrabold text-[#00159E] mb-2 text-center drop-shadow-lg">Afri-Caribbean Health Summit</h2>
-						<p className="text-center text-lg text-[#032642] mb-4 font-semibold">26 March 2026</p>
-						<p className="mb-4 text-center text-gray-700 text-lg italic">The Afri-Caribbean Health Summit, a strategic side event of AACIS 2026, is designed to address the converging health challenges facing Africa and the Caribbean such as climate-induced disease outbreaks, fragmented health systems, limited healthcare access, and low health financing. Despite these issues, both regions share immense untapped potential for collaborative health reforms, digital transformation, and joint pandemic preparedness.</p>
-						<div className="grid md:grid-cols-3 gap-6 mb-6">
-							<div className="bg-white/80 rounded-xl p-4 shadow flex flex-col items-center">
-								<span className="text-3xl mb-2">🎯</span>
-								<b className="text-[#00159E]">Leverage Shared Priorities</b>
-								<p className="text-sm mt-1">Align the African Union’s Agenda 2063 with CARICOM’s Health Security Goals to advance a unified health agenda.</p>
-							</div>
-							<div className="bg-white/80 rounded-xl p-4 shadow flex flex-col items-center">
-								<span className="text-3xl mb-2">💊</span>
-								<b className="text-[#00159E]">Catalyze Investment</b>
-								<p className="text-sm mt-1">Mobilize capital and partnerships to scale up health innovations, particularly in digital health, pharmaceuticals, and community healthcare.</p>
-							</div>
-							<div className="bg-white/80 rounded-xl p-4 shadow flex flex-col items-center">
-								<span className="text-3xl mb-2">⚖️</span>
-								<b className="text-[#00159E]">Strengthen Policy Frameworks</b>
-								<p className="text-sm mt-1">Harmonize cross-regional health trade regulations, establish coordinated crisis response systems, and explore frameworks for health workforce mobility.</p>
+				<section className="bg-white bg-[url(/src/assets/themed_bg.png)] bg-repeat bg-contain xl:p-10 p-2 mt-12">
+					<div className="md:py-16 py-8 bg-gradient-to-b from-[#fff] via-[#fff]/100 to-[#fff]">
+						<div className="container mx-auto px-3 xl:px-20">
+							<div className="relative">
+								<div className="absolute -top-8 -right-8 opacity-10 text-[10rem] pointer-events-none select-none">🩺</div>
+								<h2 className="text-3xl md:text-5xl font-gruppo font-[200] text-[#00159E] mb-2 text-center drop-shadow-lg">Afri-Caribbean Health Summit</h2>
+								<p className="text-center text-lg text-[#032642] mb-4 font-montserrat font-[400]">26 March 2026</p>
+								<p className="mb-4 text-center text-gray-700 text-lg italic font-montserrat">The Afri-Caribbean Health Summit, a strategic side event of AACIS 2026, is designed to address the converging health challenges facing Africa and the Caribbean such as climate-induced disease outbreaks, fragmented health systems, limited healthcare access, and low health financing. Despite these issues, both regions share immense untapped potential for collaborative health reforms, digital transformation, and joint pandemic preparedness.</p>
+								
+								
+								
+								{/* CTA after Health Summit */}
+								<div className="text-center mt-8">
+									<ScrollAnimation animateIn="fadeInUp">
+										<div className="bg-gradient-to-r from-[#a30907] to-[#a30907] rounded-xl p-6 text-white">
+											<h3 className="text-xl font-gruppo font-[300] mb-3">Prioritize Health & Prosperity</h3>
+											<p className="text-sm mb-4 font-montserrat opacity-90">Join the Health Summit and contribute to regional health security</p>
+											<a
+												href="/aacis/register"
+												className="inline-block bg-white text-[#a30907] font-semibold px-6 py-3 rounded-lg hover:scale-105 hover:bg-gray-100 transition-all duration-300 cursor-custom-pointer"
+											>
+												🩺 Register for Health Summit
+											</a>
+										</div>
+									</ScrollAnimation>
+								</div>
+								<div className="text-center mt-6">
+									<a
+										href="/aacis/health-summit"
+										className="inline-block bg-gradient-to-r from-[#a30907] to-[#a30907] text-white font-montserrat font-[600] px-8 py-3 rounded-lg hover:scale-105 transition-transform cursor-custom-pointer"
+									>
+										Learn More
+									</a>
+								</div>
 							</div>
 						</div>
-						<div className="bg-[#e0f2ff]/60 rounded-xl p-4 shadow mb-2">
-							<h3 className="text-lg font-bold mb-2 text-[#00159E]">Core Focus Areas</h3>
-							<ul className="list-disc pl-6 text-gray-700 text-sm">
-								<li>Leverage Shared Priorities</li>
-								<li>Catalyze Investment</li>
-								<li>Strengthen Policy Frameworks</li>
-							</ul>
-						</div>
-						<p className="mt-4 text-center text-gray-700">Framed under the overarching theme <b>"One Voice, One Vision: Advancing Afri-Caribbean Economic Unity"</b>, the summit brings together Heads of State, Ministers, private sector leaders, health innovators, and development partners to position health as a catalyst for economic stability, human capital development, and regional integration.</p>
 					</div>
 				</section>
 			</div>
 			<Mentions />
 			<Testimonials />
-
+			
+			{/* CTA after Testimonials */}
+			<div className="bg-gradient-to-r from-[#00159E] to-[#032642] py-16">
+				<div className="container mx-auto px-4 text-center">
+					<ScrollAnimation animateIn="fadeInUp">
+						<h2 className="text-3xl md:text-4xl font-gruppo font-[200] text-white mb-4">What Are You Waiting For?</h2>
+						<p className="text-xl text-white/90 mb-8 font-montserrat max-w-3xl mx-auto">
+							Join hundreds of leaders, investors, and innovators who are already registered for this historic summit. 
+							Your participation could be the catalyst for the next big breakthrough in Afri-Caribbean collaboration.
+						</p>
+						<div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+							<a
+								href="/aacis/register"
+								className="bg-white text-[#00159E] font-semibold px-8 py-4 rounded-lg hover:scale-105 hover:bg-gray-100 transition-all duration-300 text-lg flex items-center gap-2 cursor-custom-pointer"
+							>
+								🚀 REGISTER NOW - Limited Spots Available
+							</a>
+							<a
+								href="/aacis/AACIS26_brochure.pdf"
+								target="_blank"
+								rel="noreferrer"
+								className="border-2 border-white text-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-[#00159E] transition-all duration-300 cursor-custom-pointer"
+							>
+								📖 Download Brochure
+							</a>
+						</div>
+						<p className="text-white/70 text-sm mt-4 font-montserrat">
+							Early bird pricing ends soon • Secure your spot today
+						</p>
+					</ScrollAnimation>
+				</div>
+			</div>
+			
+			<SponsorBriefSection />
 			<CountdownTimer />
+			
+			{/* Floating CTA Button */}
+			<FloatingCTAButton />
+			
 			{isModalOpen && (
 				<div
 					className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70"
@@ -803,13 +1097,13 @@ function Body() {
 									href="https://momodumedia88.pixieset.com/aacis/"
 									target="_blank"
 									rel="noopener noreferrer"
-									className="flex-1 text-center py-3 font-semibold rounded-lg bg-[#00159E] text-white hover:bg-[#032642] transition"
+									className="flex-1 text-center py-3 font-semibold rounded-lg bg-[#00159E] text-white hover:bg-[#032642] transition cursor-custom-pointer"
 								>
 									Continue
 								</a>
 								<button
 									onClick={() => setIsModalOpen(false)}
-									className="flex-1 text-center py-3 font-semibold rounded-lg border border-gray-300 hover:bg-gray-100 transition"
+									className="flex-1 text-center py-3 font-semibold rounded-lg border border-gray-300 hover:bg-gray-100 transition cursor-custom-pointer"
 								>
 									Cancel
 								</button>
@@ -821,6 +1115,87 @@ function Body() {
 
 		</main>
 	);
+}
+
+// Floating CTA Button Component
+function FloatingCTAButton() {
+  const [timeLeft, setTimeLeft] = React.useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+  React.useEffect(() => {
+    const targetDate = new Date('2026-03-25T00:00:00');
+    
+    const timer = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = targetDate.getTime() - now;
+      
+      if (distance > 0) {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000)
+        });
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="fixed bottom-6 right-6 z-40">
+      <div className="bg-white rounded-2xl shadow-2xl p-4 border border-gray-200">
+        {/* Countdown Section */}
+                 <div className="text-center mb-4">
+           <div className="overflow-hidden mb-2 w-full max-w-[280px] mx-auto">
+             <div className="marquee-content-small">
+               <h3 className="text-sm font-gruppo font-[600] text-[#00159E] whitespace-nowrap">
+                 Countdown to the Event Has Begun! 🎯 Register Now! | Early Bird Registration is now open! | Register Now!
+               </h3>
+             </div>
+           </div>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="bg-[#00159E] text-white rounded-lg p-2">
+              <div className="font-bold text-lg">{timeLeft.days}</div>
+              <div className="text-[10px] opacity-80">Days</div>
+            </div>
+            <div className="bg-[#00159E] text-white rounded-lg p-2">
+              <div className="font-bold text-lg">{timeLeft.hours}</div>
+              <div className="text-[10px] opacity-80">Hours</div>
+            </div>
+            <div className="bg-[#032642] text-white rounded-lg p-2">
+              <div className="font-bold text-lg">{timeLeft.minutes}</div>
+              <div className="text-[10px] opacity-80">Mins</div>
+            </div>
+            <div className="bg-[#032642] text-white rounded-lg p-2">
+              <div className="font-bold text-lg">{timeLeft.seconds}</div>
+              <div className="text-[10px] opacity-80">Secs</div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Action Buttons */}
+        <div className="space-y-2">
+          <a
+            href="/aacis/register"
+            className="block w-full bg-gradient-to-r from-[#032642] to-[#00159E] text-white font-semibold px-4 py-3 rounded-lg hover:scale-105 hover:opacity-90 transition-all duration-300 text-center text-sm cursor-custom-pointer"
+          >
+            REGISTER NOW
+          </a>
+          <a
+            href="/aacis/volunteers"
+            className="block w-full border-2 border-[#00159E] text-[#00159E] font-semibold px-4 py-2 rounded-lg hover:bg-[#00159E] hover:text-white transition-all duration-300 text-center text-sm cursor-custom-pointer"
+          >
+            VOLUNTEER
+          </a>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default Body;
