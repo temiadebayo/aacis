@@ -229,7 +229,7 @@ function Body() {
 				"In Partnership with the Government of St Kitts and Nevis.",
 				"ACL's Afri-Caribbean Health Summit - March 26, 2026",
 				"One Voice, One Vision: Advancing Afri-Caribbean Unity.",
-				"2 Continents, 4 Days, 40 Speakers. Unlimited Opportunities.",
+				"2 Continents, 6 Days, 40 Speakers. Unlimited Opportunities.",
 				"The Countdown Has Begun. Register Now.",
 				"Join Us For Specialized Summits Addressing Critical Regional Challenges.",
 			],
@@ -253,7 +253,7 @@ function Body() {
 					case 4: // "One Voice, One Vision: Advancing Afri-Caribbean Unity."
 						setCurrentSummit('main');
 						break;
-					case 5: // "2 Continents, 4 Days, 40 Speakers. Unlimited Opportunities."
+					case 5: // "2 Continents, 6 Days, 40 Speakers. Unlimited Opportunities."
 						setCurrentSummit('main');
 						break;
 					case 6: // "The Countdown Has Begun. Register Now."
@@ -446,7 +446,7 @@ function Body() {
 						<div className="font-gruppo text-[24px] md:text-[54px] xl:text-[118px] leading-[35px] md:leading-[85px] xl:leading-[125px] text-[#39663a] text-center md:text-left">
 							<ScrollAnimation animateIn="fadeIn">
 								<h2 className="md:flex md:gap-5">
-									<span className="md:indent-16 xl:indent-0 font-[300] xl:pl-8">4</span>{" "}
+									<span className="md:indent-16 xl:indent-0 font-[300] xl:pl-8">6</span>{" "}
 									<span className="font-[200]">Days</span>
 								</h2>
 							</ScrollAnimation>
